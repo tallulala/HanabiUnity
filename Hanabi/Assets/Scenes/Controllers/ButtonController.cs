@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,39 +7,92 @@ using UnityEngine.UI;
 public class ButtonController : MonoBehaviour {
 
     public GameObject Card;
-    public GameObject[] cards;
+    public GameObject PlayField;
+    public GameObject Background;
+    public GameObject[] Deck;
 
-    //public Transform faceUp;
+    public int DeckIndex;
 
-    public Vector3 deckPos;
-    public Vector3 offScreen;
+    public Vector3 DeckPos;
+    public Vector3 PlayFieldSize;
+    public Vector3 BackgroundSize;
+    public Vector3 OffScreen;
 
-    public Vector3[] playerHand;
-    public Vector3[] computerHand;
+    public Vector3[] PlayerHand;
+    public Vector3[] ComputerHand;
+    public Vector3[] PlayArea;
+    public Vector3[] DiscardPile;
+
 
     public void Start()
     {
-        cards = new GameObject[50];
-        deckPos = new Vector3(-20f, 0f, 6f);
-        //faceUp.rotation = Quaternion.Euler(180, 0, 180);
-        offScreen = new Vector3(6000000f, 0f, 6000000f);
 
+        Deck = new GameObject[50];
+        DeckIndex = 0;
+        DeckPos = new Vector3(-87, 0, 50);
+
+        OffScreen = new Vector3(6000000f, 0f, 6000000f);
+
+        ComputerHand = new Vector3[5];
+        PlayerHand = new Vector3[5];
+        for (int i = 0; i < 5; i++)
+        {
+            ComputerHand[i] = new Vector3((-46 + (12 * i)), 1, 40);
+            PlayerHand[i] = new Vector3((-46 + (12 * i)), 1, -40);
+        }
     }
 
     public void OnClick()
-	{
-        gameObject.transform.position = offScreen;
+    {
+        gameObject.transform.position = OffScreen;
 
         for (int i = 0; i < 50; i++)
         {
-            cards[i] = Instantiate(Card, deckPos, Quaternion.identity);
+            Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
+            Deck[i].name = ("Card" + i);
+            DeckIndex++;
         }
-        
-        // Deal();
-	}
-		
+
+        Deal();
+    }
+    
     public void Deal ()
     {
-        //if any empty spaces new card
+        Vector3 position;
+        float radius = 1;
+ 
+        foreach (Vector3 pos in ComputerHand) 
+        {
+            position = pos;
+
+            if (Physics.CheckSphere(position, radius))
+            {
+                Deck[DeckIndex - 1].transform.Translate(position, Space.World);
+                Deck[DeckIndex - 1].transform.Rotate(Vector3.up, 180);
+                DeckIndex--;
+            }
+        }
+
+        foreach (Vector3 pos in PlayerHand)
+        {
+            position = pos;
+
+            if (Physics.CheckSphere(position, radius))
+            {
+                Deck[DeckIndex - 1].transform.Translate(position, Space.World);
+                Deck[DeckIndex - 1].transform.Rotate(Vector3.up, 180);
+                DeckIndex--;
+            }
+        }
+
+        Debug.Log("Dealt");
     }
 }
+
+/*
+    private Vector3 GetMaxBounds(GameObject playField)
+    {
+        throw new NotImplementedException();
+    }
+
+ */
