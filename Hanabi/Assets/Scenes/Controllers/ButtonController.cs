@@ -26,10 +26,12 @@ public class ButtonController : MonoBehaviour {
 
     public void Start()
     {
-
+        Background.transform.Translate(new Vector3(0f, 0f, 0f), Space.World);
+        PlayField.transform.Translate(new Vector3(0, 0.01f, 0), Space.World);
+       
         Deck = new GameObject[50];
         DeckIndex = 0;
-        DeckPos = new Vector3(-87, 0, 50);
+        DeckPos = new Vector3(-87, 1, 50);
 
         OffScreen = new Vector3(6000000f, 0f, 6000000f);
 
@@ -37,8 +39,8 @@ public class ButtonController : MonoBehaviour {
         PlayerHand = new Vector3[5];
         for (int i = 0; i < 5; i++)
         {
-            ComputerHand[i] = new Vector3((-46 + (12 * i)), 1, 40);
-            PlayerHand[i] = new Vector3((-46 + (12 * i)), 1, -40);
+            ComputerHand[i] = new Vector3((12 * i), 1, 40);
+            PlayerHand[i] = new Vector3((12 * i), 1, -40);
         }
     }
 
