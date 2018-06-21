@@ -74,10 +74,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4664948401411680}
   - component: {fileID: 65119511676898176}
-  - component: {fileID: 114448302188248106}
-  - component: {fileID: 114390134819739938}
   - component: {fileID: 54456774379698416}
-  - component: {fileID: 114932824174401972}
+  - component: {fileID: 114265975434361748}
   m_Layer: 0
   m_Name: card
   m_TagString: Card
@@ -225,7 +223,7 @@ Transform:
   m_GameObject: {fileID: 1602146955770232}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 1, z: 2.58}
-  m_LocalScale: {x: 8, y: 1, z: 8.5}
+  m_LocalScale: {x: 250, y: 1, z: 250}
   m_Children:
   - {fileID: 4081459067283800}
   - {fileID: 4504502082369720}
@@ -599,7 +597,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.1, z: 1.33}
   m_Center: {x: 0, y: -0.05, z: 0}
---- !u!114 &114390134819739938
+--- !u!114 &114265975434361748
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -607,41 +605,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1602146955770232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64427105b4fc0f94c98ceffe6ea76fe7, type: 3}
+  m_Script: {fileID: 11500000, guid: bbfc25ff5b2ca2f4083fad34d454280c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114448302188248106
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1602146955770232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45028c708897b2548ade48963437d2dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetangle: 0
-  sourceangle: 0
-  targetposition: {x: 0, y: 0, z: 0}
-  werewolf: {fileID: 2100000, guid: ce919f9e356daa94a954b6967338a244, type: 2}
-  villager: {fileID: 2100000, guid: 961ba4cb3e4757a4d833351a74c4c4c8, type: 2}
-  seer: {fileID: 2100000, guid: 5a0d36347d68803468ad317e86f72973, type: 2}
-  robber: {fileID: 2100000, guid: a4896a9563fd2784a909f8d2de2aafda, type: 2}
-  troublemaker: {fileID: 2100000, guid: 42670ab2bb7555c4b8122d0fef76e1b1, type: 2}
-  insomniac: {fileID: 2100000, guid: 37951b93e6dff2e4e8ac3f8bdb6b1d06, type: 2}
-  front: {fileID: 1543072992176924}
-  label: {fileID: 0}
-  p: 0
-  mgr: {fileID: 0}
---- !u!114 &114932824174401972
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1602146955770232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 875fb398cfeac44428ccd426e9698de4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Card: {fileID: 1602146955770232}
