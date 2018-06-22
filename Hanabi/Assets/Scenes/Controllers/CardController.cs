@@ -16,6 +16,8 @@ public class CardController : MonoBehaviour
     public Material red;
     public Material green;
 
+    public bool inHand;
+
     Color color;
     Rank rank;
 

@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class ButtonController : MonoBehaviour {
 
     public GameObject Card;
-
+    public GameObject Front;
+    public TextMesh Label;
     public GameObject[] Deck;
 
     public int DeckCount;
@@ -24,7 +25,7 @@ public class ButtonController : MonoBehaviour {
 
     public void Start()
     {
-        DeckPos = new Vector3(-1638, 1, 345);
+        DeckPos = new Vector3(-1368, 15, 550);
 
         Deck = new GameObject[50];
         DeckCount = 0;
@@ -35,8 +36,8 @@ public class ButtonController : MonoBehaviour {
         PlayerHand = new Vector3[5];
         for (int i = 0; i < 5; i++)
         {
-            ComputerHand[i] = new Vector3((1000 + (330 * i)), 2, 200);
-            PlayerHand[i] = new Vector3((1000 + (330 * i)), 2, -1500);
+            ComputerHand[i] = new Vector3((800 + (330 * i)), 2, -50);
+            PlayerHand[i] = new Vector3((800 + (330 * i)), 2, -1750);
         }
     }
 
@@ -60,21 +61,28 @@ public class ButtonController : MonoBehaviour {
             Deck[i].name = ("Card" + i);
             Deck[i].SetActive(true);
             Deck[i].transform.Rotate(Vector3.right, 180);
-
-            for(int j = 0; j < 5; j++)
-            {
-                //setColor(j);
-
-                foreach (int count in rankCount)
-                {
-                    for (int k = 0; k < count; k++)
-                    {
-                        //setRank(j);
-                    }
-                }
-            }
-
+            Deck[i].GetComponent<CardController>().inHand = false;
             DeckCount++;
+        }
+
+        int idx = 0;
+        int rank = 0;
+
+        CardController thisCard;
+
+        for (int j = 0; j < 5; j++)
+        {
+            foreach (int count in rankCount)
+            {
+                for (int k = 0; k < count; k++)
+                {
+                    thisCard = Deck[idx].GetComponent<CardController>();
+                    thisCard.setRank(rank);
+                    thisCard.setColor(j);
+                    idx++;
+                }
+                rank++;
+            }
         }
     }
 
@@ -87,7 +95,11 @@ public class ButtonController : MonoBehaviour {
             position = pos;
 
             Deck[DeckCount - 1].transform.Translate(position, Space.World);
+
             Deck[DeckCount - 1].transform.Rotate(Vector3.right, 180);
+
+            Deck[DeckCount - 1].GetComponent<CardController>().inHand = true;
+
             DeckCount--;
         }
     }
@@ -112,32 +124,4 @@ public class ButtonController : MonoBehaviour {
         }
         return shuffledDeck;
     }
-
-    public void DrawCard()
-    {
-        // puts card in empty space in either computer or players hand
-    }
 }
-
-/*
-Random rand = new Random();
-
-List<int> result = new List<int>();
-
-HashSet<int> check = new HashSet<int>();
-
-for (Int32 i = 0; i< 300; i++) {
-
-    int curValue = rand.Next(1, 100000);
-    
-    while (check.Contains(curValue)) {
-    
-        curValue = rand.Next(1, 100000);
-    
-    }
-    
-    result.Add(curValue);
-    
-    check.Add(curValue);
-}
-*/
