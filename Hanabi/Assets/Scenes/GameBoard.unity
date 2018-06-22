@@ -1192,7 +1192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875fb398cfeac44428ccd426e9698de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 0}
 --- !u!54 &316975246
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2346,11 +2345,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa1545d199b6e2469d0169affaa77bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayField: {fileID: 1630013503}
-  Background: {fileID: 447028029}
-  Card: {fileID: 1602146955770232, guid: 2dec50c02d38739468e1ae2bbf41e28b, type: 2}
+  Card: {fileID: 1568214811776634, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   Deck: []
   DeckCount: 0
+  rankCount: 0300000002000000020000000200000001000000
   DeckPos: {x: 0, y: 0, z: 0}
   OffScreen: {x: 0, y: 0, z: 0}
   PlayerHand: []
@@ -2580,7 +2578,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 236000399}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9998483
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2835,7 +2833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875fb398cfeac44428ccd426e9698de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 0}
 --- !u!54 &1161671930
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3359,11 +3356,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa1545d199b6e2469d0169affaa77bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayField: {fileID: 1630013503}
-  Background: {fileID: 447028029}
-  Card: {fileID: 0}
+  Card: {fileID: 1568214811776634, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   Deck: []
   DeckCount: 0
+  rankCount: 0300000002000000020000000200000001000000
   DeckPos: {x: 0, y: 0, z: 0}
   OffScreen: {x: 0, y: 0, z: 0}
   PlayerHand: []
@@ -3493,7 +3489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875fb398cfeac44428ccd426e9698de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 0}
 --- !u!54 &1357548346
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3573,7 +3568,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000013962704, y: 0.000048342587}
+  m_AnchoredPosition: {x: 0.000013962704, y: -0.000019356181}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1502085611
@@ -4412,7 +4407,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875fb398cfeac44428ccd426e9698de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 0}
 --- !u!54 &1910001610
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4843,7 +4837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875fb398cfeac44428ccd426e9698de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 0}
 --- !u!54 &2046479320
 Rigidbody:
   m_ObjectHideFlags: 0

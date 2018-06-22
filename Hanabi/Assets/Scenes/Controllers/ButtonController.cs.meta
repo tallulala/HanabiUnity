@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - Card: {fileID: 1602146955770232, guid: 2dec50c02d38739468e1ae2bbf41e28b, type: 2}
+  - Card: {fileID: 1568214811776634, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

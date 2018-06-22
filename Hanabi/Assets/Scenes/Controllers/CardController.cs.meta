@@ -4,7 +4,14 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - Card: {fileID: 1602146955770232, guid: 2dec50c02d38739468e1ae2bbf41e28b, type: 2}
+  - Card: {fileID: 1568214811776634, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - front: {fileID: 1943379278599386, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - label: {fileID: 102407120443069644, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - white: {fileID: 2100000, guid: 605c78164add013408ea48d6bb0730cc, type: 2}
+  - blue: {fileID: 2100000, guid: 2c0880ad411886e4893102cb46d22922, type: 2}
+  - yellow: {fileID: 2100000, guid: e0df0e17507a30a4eac0240fa0f6e62a, type: 2}
+  - red: {fileID: 2100000, guid: 4fc3b0bb2e53c8642b1ee76e8ea34445, type: 2}
+  - green: {fileID: 2100000, guid: 3bb2509d5d85f614e8b4c6e94c0c7edb, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
