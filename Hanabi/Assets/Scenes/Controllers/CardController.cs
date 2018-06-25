@@ -35,9 +35,9 @@ public class CardController : MonoBehaviour
         white, blue, yellow, red, green
     };
 
-    public void setColor(int toColor)
+    public void SetColor(int toColor)
     {
-        color = (Color) toColor;
+        color = (Color)toColor;
 
         switch (color)
         {
@@ -61,9 +61,9 @@ public class CardController : MonoBehaviour
         }
     }
 
-    public void setRank(int toRank)
+    public void SetRank(int toRank)
     {
-        rank = (Rank) toRank;
+        rank = (Rank)toRank;
 
         switch (rank)
         {

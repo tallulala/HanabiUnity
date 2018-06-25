@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonController : MonoBehaviour {
+public class ButtonController : MonoBehaviour
+{
 
     public GameObject Card;
     public GameObject Front;
-    public TextMesh Label;
+    public TextMesh RankLabel;
     public GameObject[] Deck;
 
     public int DeckCount;
 
-    public int[] rankCount = { 3, 2, 2, 2, 1 };
+    public int[] RankCount = { 3, 2, 2, 2, 1 };
 
     public Vector3 DeckPos;
     public Vector3 OffScreen;
@@ -23,6 +24,7 @@ public class ButtonController : MonoBehaviour {
     public Vector3[] PlayArea;
     public Vector3[] DiscardPile;
 
+    /// Assigns variables
     public void Start()
     {
         DeckPos = new Vector3(-1368, 15, 550);
@@ -41,11 +43,14 @@ public class ButtonController : MonoBehaviour {
         }
     }
 
+    ///Clicking the start button
+    /// Generates and shuffles deck
+    /// Deals five cards to each player
     public void OnClick()
     {
         gameObject.transform.position = OffScreen;
 
-        GenerateDeck();
+        MakeDeck();
 
         Deck = Shuffle(Deck);
 
@@ -53,40 +58,55 @@ public class ButtonController : MonoBehaviour {
         Deal(ComputerHand);
     }
 
-    public void GenerateDeck()
+    ///Steps to generate 50, non-distinct card objects
+    /// @param i Deck index
+    public void GenerateCards(int i)
     {
-        for (int i = 0; i < 50; i++)
-        {
-            Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
-            Deck[i].name = ("Card" + i);
-            Deck[i].SetActive(true);
-            Deck[i].transform.Rotate(Vector3.right, 180);
-            Deck[i].GetComponent<CardController>().inHand = false;
-            DeckCount++;
-        }
+        Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
+        Deck[i].name = ("Card" + i);
+        Deck[i].SetActive(true);
+        Deck[i].transform.Rotate(Vector3.right, 180);
+        Deck[i].GetComponent<CardController>().inHand = false;
+        DeckCount++;
+    }
 
-        int idx = 0;
-        int rank = 0;
+    /// Generates 50 cards objects, adds color and rank to each card
+    /// 3 ones of each color
+    /// 2 twos, 2 threes, and 2 fours of each color
+    /// 1 five of each color
+    /// 
+    /// ERROR: generating wrong number of card with rank?
+    /// 
+    public void MakeDeck()
+    {
+        int i = 0;
+        int rank;
 
         CardController thisCard;
 
         for (int j = 0; j < 5; j++)
         {
-            foreach (int count in rankCount)
+            rank = 0;
+            foreach (int count in RankCount)
             {
                 for (int k = 0; k < count; k++)
                 {
-                    thisCard = Deck[idx].GetComponent<CardController>();
-                    thisCard.setRank(rank);
-                    thisCard.setColor(j);
-                    idx++;
+                    GenerateCards(i);
+                    thisCard = Deck[i].GetComponent<CardController>();
+                    thisCard.SetRank(rank);
+                    thisCard.SetColor(j);
+                    Debug.Log("making " + rank.ToString() + " of color " + j.ToString());
+                    i++;
                 }
                 rank++;
             }
         }
     }
 
-    public void Deal (Vector3[] hand)
+
+    /// Deals cards to each position in a specified hand
+    /// @param Hand array of positions in a certain players hand
+    public void Deal(Vector3[] hand)
     {
         Vector3 position;
 
@@ -104,6 +124,8 @@ public class ButtonController : MonoBehaviour {
         }
     }
 
+    /// Adds cards to new array in 'random' order
+    /// @param shuffledDeck temporary deck to add cards to in 'random' order
     public GameObject[] Shuffle(GameObject[] shuffledDeck)
     {
         System.Random random = new System.Random();
