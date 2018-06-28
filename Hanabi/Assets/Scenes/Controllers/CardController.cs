@@ -1,14 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
 public class CardController : MonoBehaviour
 {
     public GameObject Card;
-    public GameObject front;
+    public GameObject Front;
+    public GameObject HintBox;
+    public GameObject Selected;
 
-    public TextMesh label;
+    public ButtonController ButtonCont;
+
+    public Vector3 OffScreen = new Vector3(6000000f, 0f, 6000000f);
+
+    public GameObject PlayerCardMenu;
+    public GameObject ComputerCardMenu;
+
+    public TextMesh RankLabel;
 
     public Material white;
     public Material blue;
@@ -16,23 +27,24 @@ public class CardController : MonoBehaviour
     public Material red;
     public Material green;
 
-    public bool inHand;
+    public Color color;
+    public Rank rank;
 
-    Color color;
-    Rank rank;
+    public Location location;
 
-    enum Rank : int
+    public enum Location 
     {
-        one,
-        two,
-        three,
-        four,
-        five
+           PLAYER, COMPUTER, BOARD, DECK, TRASH
     };
 
-    enum Color
+    public enum Rank : int
     {
-        white, blue, yellow, red, green
+        ONE, TWO, THREE, FOUR, FIVE
+    };
+
+    public enum Color
+    {
+        WHITE, BLUE, YELLOW, RED, GREEN
     };
 
     public void SetColor(int toColor)
@@ -41,20 +53,20 @@ public class CardController : MonoBehaviour
 
         switch (color)
         {
-            case Color.white:
-                front.GetComponent<MeshRenderer>().material = white;
+            case Color.WHITE:
+                Front.GetComponent<MeshRenderer>().material = white;
                 break;
-            case Color.blue:
-                front.GetComponent<MeshRenderer>().material = blue;
+            case Color.BLUE:
+                Front.GetComponent<MeshRenderer>().material = blue;
                 break;
-            case Color.yellow:
-                front.GetComponent<MeshRenderer>().material = yellow;
+            case Color.YELLOW:
+                Front.GetComponent<MeshRenderer>().material = yellow;
                 break;
-            case Color.red:
-                front.GetComponent<MeshRenderer>().material = red;
+            case Color.RED:
+                Front.GetComponent<MeshRenderer>().material = red;
                 break;
-            case Color.green:
-                front.GetComponent<MeshRenderer>().material = green;
+            case Color.GREEN:
+                Front.GetComponent<MeshRenderer>().material = green;
                 break;
             default:
                 break;
@@ -67,23 +79,58 @@ public class CardController : MonoBehaviour
 
         switch (rank)
         {
-            case Rank.one:
-                label.text = "1";
+            case Rank.ONE:
+                RankLabel.text = "1";
                 break;
-            case Rank.two:
-                label.text = "2";
+            case Rank.TWO:
+                RankLabel.text = "2";
                 break;
-            case Rank.three:
-                label.text = "3";
+            case Rank.THREE:
+                RankLabel.text = "3";
                 break;
-            case Rank.four:
-                label.text = "4";
+            case Rank.FOUR:
+                RankLabel.text = "4";
                 break;
-            case Rank.five:
-                label.text = "5";
+            case Rank.FIVE:
+                RankLabel.text = "5";
                 break;
             default:
                 break;
+        }
+    }
+
+    public void OnMouseUpAsButton()
+    {
+   
+        Vector3 CardPos = gameObject.transform.position;
+        Vector3 MenuPos;
+        Debug.Log("Click");
+
+        if (location == Location.PLAYER)
+        {
+            Debug.Log("Player menu moved");
+
+            Selected.SetActive(true);
+
+            MenuPos = new Vector3(CardPos.x, (CardPos.y + 1), (CardPos.z + 400));
+            PlayerCardMenu.transform.position = MenuPos;
+
+            ComputerCardMenu.transform.position = OffScreen;
+            
+            // Deselect all other cards
+
+        }
+        else if (location == Location.COMPUTER)
+        {
+            Debug.Log("Computer menu moved");
+
+            Selected.SetActive(true);
+
+            MenuPos = new Vector3(CardPos.x, (CardPos.y + 1), (CardPos.z - 400));
+            ComputerCardMenu.transform.position = MenuPos;
+            PlayerCardMenu.transform.position = OffScreen;
+
+            // Deselect all other cards
         }
     }
 }

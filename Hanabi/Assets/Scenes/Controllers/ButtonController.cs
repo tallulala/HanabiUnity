@@ -9,8 +9,10 @@ public class ButtonController : MonoBehaviour
 
     public GameObject Card;
     public GameObject Front;
-    public TextMesh RankLabel;
     public GameObject[] Deck;
+
+    public GameObject PlayerCardMenu;
+    public GameObject ComputerCardMenu;
 
     public int DeckCount;
 
@@ -27,10 +29,9 @@ public class ButtonController : MonoBehaviour
     /// Assigns variables
     public void Start()
     {
-        DeckPos = new Vector3(-1368, 15, 550);
+        DeckPos = new Vector3(-1365, 25, 570);
 
         Deck = new GameObject[50];
-        DeckCount = 0;
 
         OffScreen = new Vector3(6000000f, 0f, 6000000f);
 
@@ -38,8 +39,8 @@ public class ButtonController : MonoBehaviour
         PlayerHand = new Vector3[5];
         for (int i = 0; i < 5; i++)
         {
-            ComputerHand[i] = new Vector3((800 + (330 * i)), 2, -50);
-            PlayerHand[i] = new Vector3((800 + (330 * i)), 2, -1750);
+            ComputerHand[i] = new Vector3((800 + (350 * i)), 2, -75);
+            PlayerHand[i] = new Vector3((800 + (350 * i)), 2, -1775);
         }
     }
 
@@ -50,34 +51,22 @@ public class ButtonController : MonoBehaviour
     {
         gameObject.transform.position = OffScreen;
 
-        MakeDeck();
+        PlayerCardMenu.transform.position = OffScreen;
+        ComputerCardMenu.transform.position = OffScreen;
+
+        Deck = MakeDeck();
 
         Deck = Shuffle(Deck);
 
-        Deal(PlayerHand);
-        Deal(ComputerHand);
-    }
-
-    ///Steps to generate 50, non-distinct card objects
-    /// @param i Deck index
-    public void GenerateCards(int i)
-    {
-        Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
-        Deck[i].name = ("Card" + i);
-        Deck[i].SetActive(true);
-        Deck[i].transform.Rotate(Vector3.right, 180);
-        Deck[i].GetComponent<CardController>().inHand = false;
-        DeckCount++;
+        Deal(PlayerHand, true);
+        Deal(ComputerHand, false);
     }
 
     /// Generates 50 cards objects, adds color and rank to each card
     /// 3 ones of each color
     /// 2 twos, 2 threes, and 2 fours of each color
     /// 1 five of each color
-    /// 
-    /// ERROR: generating wrong number of card with rank?
-    /// 
-    public void MakeDeck()
+    public GameObject[] MakeDeck()
     {
         int i = 0;
         int rank;
@@ -91,7 +80,19 @@ public class ButtonController : MonoBehaviour
             {
                 for (int k = 0; k < count; k++)
                 {
-                    GenerateCards(i);
+                    Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
+                    Deck[i].GetComponent<CardController>().ButtonCont = this;
+                    Deck[i].GetComponent<CardController>().location = CardController.Location.DECK;
+                    Deck[i].name = ("Card" + i);
+                    Deck[i].SetActive(true);
+                    Deck[i].transform.Rotate(Vector3.right, 180);
+
+                    Deck[i].GetComponent<CardController>().PlayerCardMenu = PlayerCardMenu;
+                    Deck[i].GetComponent<CardController>().ComputerCardMenu = ComputerCardMenu;
+                    Deck[i].GetComponent<CardController>().location = CardController.Location.DECK;
+
+                    DeckCount++;
+
                     thisCard = Deck[i].GetComponent<CardController>();
                     thisCard.SetRank(rank);
                     thisCard.SetColor(j);
@@ -101,12 +102,13 @@ public class ButtonController : MonoBehaviour
                 rank++;
             }
         }
-    }
 
+        return Deck;
+    }
 
     /// Deals cards to each position in a specified hand
     /// @param Hand array of positions in a certain players hand
-    public void Deal(Vector3[] hand)
+    public void Deal(Vector3[] hand, bool player)
     {
         Vector3 position;
 
@@ -118,8 +120,10 @@ public class ButtonController : MonoBehaviour
 
             Deck[DeckCount - 1].transform.Rotate(Vector3.right, 180);
 
-            Deck[DeckCount - 1].GetComponent<CardController>().inHand = true;
-
+            if (player)
+                Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.PLAYER;
+            else
+                Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.COMPUTER;
             DeckCount--;
         }
     }
