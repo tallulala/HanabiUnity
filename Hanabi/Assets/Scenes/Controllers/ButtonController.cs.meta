@@ -4,7 +4,13 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - Card: {fileID: 1568214811776634, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - Card: {fileID: 1379707864246168, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - Front: {fileID: 1532489183787350, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - PlayerCardMenu: {fileID: 1308439936512524, guid: e52e716ef6abdcd459294171c91d0b2e,
+      type: 2}
+  - ComputerCardMenu: {fileID: 1460134934140946, guid: ffa012cc6a8ca5e47804676e364dd4f1,
+      type: 2}
+  - Selected: {fileID: 1812788921193222, guid: 5b007dc7a89c54549865635a73df2871, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

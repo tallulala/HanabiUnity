@@ -13,6 +13,8 @@ public class ButtonController : MonoBehaviour
 
     public GameObject PlayerCardMenu;
     public GameObject ComputerCardMenu;
+    public GameObject Selected;
+    public GameObject HintBox;
 
     public int DeckCount;
 
@@ -23,8 +25,9 @@ public class ButtonController : MonoBehaviour
 
     public Vector3[] PlayerHand;
     public Vector3[] ComputerHand;
-    public Vector3[] PlayArea;
-    public Vector3[] DiscardPile;
+
+    public Vector3[][] DiscardArea;
+    public Vector3[][] PlayArea;
 
     /// Assigns variables
     public void Start()
@@ -37,22 +40,59 @@ public class ButtonController : MonoBehaviour
 
         ComputerHand = new Vector3[5];
         PlayerHand = new Vector3[5];
+
+        DiscardArea = new Vector3[5][];
+        PlayArea = new Vector3[5][];
+
+        /// Instantiate Computer and Player hand positions
         for (int i = 0; i < 5; i++)
         {
             ComputerHand[i] = new Vector3((800 + (350 * i)), 2, -75);
             PlayerHand[i] = new Vector3((800 + (350 * i)), 2, -1775);
         }
+
+        /// Instantiate PlayArea positions
+        for (int i = 0; i < 5; i++)
+        {
+            PlayArea[i] = new Vector3[5];
+            int j;
+
+            for (j = 0; j < 5; j++)
+            {
+                PlayArea[i][j] = new Vector3((-550 + (350 * i)), (25 + (j * 2)), (-100 - (100 * j)));
+                //Use for testing:
+                //Instantiate(Card, PlayArea[i][j], Quaternion.identity);
+            }
+
+            j = 0;
+        }
+
+        /// Instantiate DiscardArea positions
+        for (int i = 0; i < 5; i++)
+        {
+            DiscardArea[i] = new Vector3[10];
+            int k;
+
+            for (k = 0; k < 10; k++)
+            {
+                DiscardArea[i][k] = new Vector3(1450 + (100 * k), (25 + (k * 2)), (400 - (400 * i)));
+                //Use for testing:
+                //Instantiate(Card, DiscardArea[i][k], Quaternion.identity);
+            }
+
+            k = 0;
+        }
     }
 
-    ///Clicking the start button
+    /// Clicking the start button
     /// Generates and shuffles deck
     /// Deals five cards to each player
     public void OnClick()
     {
         gameObject.transform.position = OffScreen;
-
         PlayerCardMenu.transform.position = OffScreen;
         ComputerCardMenu.transform.position = OffScreen;
+        Selected.transform.position = OffScreen;
 
         Deck = MakeDeck();
 
@@ -81,22 +121,31 @@ public class ButtonController : MonoBehaviour
                 for (int k = 0; k < count; k++)
                 {
                     Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
-                    Deck[i].GetComponent<CardController>().ButtonCont = this;
-                    Deck[i].GetComponent<CardController>().location = CardController.Location.DECK;
-                    Deck[i].name = ("Card" + i);
                     Deck[i].SetActive(true);
-                    Deck[i].transform.Rotate(Vector3.right, 180);
 
-                    Deck[i].GetComponent<CardController>().PlayerCardMenu = PlayerCardMenu;
-                    Deck[i].GetComponent<CardController>().ComputerCardMenu = ComputerCardMenu;
-                    Deck[i].GetComponent<CardController>().location = CardController.Location.DECK;
+                    thisCard = Deck[i].GetComponent<CardController>();
+
+                    thisCard.ButtonCont = this;
+
+                    thisCard.name = ("Card" + i);
+                    thisCard.transform.Rotate(Vector3.right, 180);
+
+                    thisCard.HintBox = HintBox;
+                    thisCard.HintBox.transform.position = OffScreen;
+                    thisCard.HintedRank.text = "";
+                    thisCard.HintedColor = Deck[i].GetComponent<CardController>().grey;
+
+                    thisCard.PlayerCardMenu = PlayerCardMenu;
+                    thisCard.ComputerCardMenu = ComputerCardMenu;
+                    thisCard.Selected = Selected;
+
+                    thisCard.location = CardController.Location.DECK;
+
+                    thisCard.SetRank(rank);
+                    thisCard.SetColor(j);
 
                     DeckCount++;
 
-                    thisCard = Deck[i].GetComponent<CardController>();
-                    thisCard.SetRank(rank);
-                    thisCard.SetColor(j);
-                    Debug.Log("making " + rank.ToString() + " of color " + j.ToString());
                     i++;
                 }
                 rank++;

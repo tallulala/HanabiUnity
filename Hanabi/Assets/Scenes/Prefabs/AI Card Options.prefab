@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPlayerTurn: 1
-  Moves: {fileID: 0}
+  Moves: {fileID: 114465666929122750, guid: 0c68492a210c22143af83bed2178e13c, type: 2}
   Rank: {fileID: 102817961954885390}
   Color: {fileID: 102350287819621572}
   Play: {fileID: 0}
@@ -580,3 +580,4 @@ MonoBehaviour:
   player: 
   move: 
   card: 
+  MoveOption: 0

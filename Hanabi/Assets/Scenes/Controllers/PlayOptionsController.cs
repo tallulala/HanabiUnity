@@ -16,9 +16,6 @@ public class PlayOptionsController : MonoBehaviour
 
     public Text Turn;
 
-    public Vector3[][] PlayArea;
-    public Vector3[][] DiscardArea;
-
     public string player;
     public string move;
     public string card;
@@ -32,15 +29,6 @@ public class PlayOptionsController : MonoBehaviour
 
     public void Start()
     {
-        PlayArea = new Vector3[5][];
-        DiscardArea = new Vector3[5][];
-
-        foreach(Vector3[] i in PlayArea)
-        {
-            foreach(Vector3 j in PlayArea[10])
-            {
-            }
-        }
     }
 
     public void YourMove(int opt)
@@ -76,20 +64,22 @@ public class PlayOptionsController : MonoBehaviour
 
     public void HintRank()
     {
-        // Highlight rank
         // decrement hint tokens
 
-        Debug.Log("Rank hinted!");
+        CardController CurrentCard = GetComponent<CardController>();
+        CurrentCard.HintBox.transform.position = new Vector3(-0.5f, 1, 0.5f);
+        CurrentCard.HintedRank.text = CurrentCard.RankLabel.text;
 
         //NewTurn();
     }
 
     public void HintColor()
     {
-        // Highlight Card in certain color
         // decrement hint tokens
 
-        Debug.Log("Color hinted!");
+        CardController CurrentCard = GetComponent<CardController>();
+        CurrentCard.HintBox.transform.position = new Vector3(-0.5f, 1, 0.5f);
+        CurrentCard.HintBox.GetComponent<MeshRenderer>().material = CurrentCard.CardColor;
 
         //NewTurn();
     }
@@ -103,6 +93,17 @@ public class PlayOptionsController : MonoBehaviour
         // increment hint tokens
         // decrement mistakes counter
 
+        CardController CurrentCard = GetComponent<CardController>();
+
+        /* if ()
+        {
+            CurrentCard.location = CardController.Location.BOARD;
+
+        } else {
+            CurrentCard.location = CardController.Location.TRASH;
+        } */ 
+
+
         Debug.Log("Card Played!");
 
         //NewTurn();
@@ -112,6 +113,8 @@ public class PlayOptionsController : MonoBehaviour
     {
         // move to correct place in discard field
         // increment hint tokens
+        CardController CurrentCard = GetComponent<CardController>();
+        CurrentCard.location = CardController.Location.TRASH;
 
         Debug.Log("Card discarded!");
 
@@ -121,9 +124,9 @@ public class PlayOptionsController : MonoBehaviour
     public void NewTurn(string move)
     {
         // add move to moves log
-        //Moves.content.GetComponent<Text> = player + move + card;
+        // Moves.content.GetComponent<Text> = player + move + card;
 
-        IsPlayerTurn = !IsPlayerTurn;
+        // IsPlayerTurn = !IsPlayerTurn;
 
     }
 }

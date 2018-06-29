@@ -20,12 +20,17 @@ public class CardController : MonoBehaviour
     public GameObject ComputerCardMenu;
 
     public TextMesh RankLabel;
+    public TextMesh HintedRank;
+
+    public Material CardColor;
+    public Material HintedColor;
 
     public Material white;
     public Material blue;
     public Material yellow;
     public Material red;
     public Material green;
+    public Material grey;
 
     public Color color;
     public Rank rank;
@@ -47,6 +52,14 @@ public class CardController : MonoBehaviour
         WHITE, BLUE, YELLOW, RED, GREEN
     };
 
+    public void Start()
+    {
+        HintBox.transform.position = OffScreen;
+        HintedColor = grey;
+        HintedRank.text = "";
+        
+    }
+
     public void SetColor(int toColor)
     {
         color = (Color)toColor;
@@ -55,18 +68,23 @@ public class CardController : MonoBehaviour
         {
             case Color.WHITE:
                 Front.GetComponent<MeshRenderer>().material = white;
+                CardColor = white;
                 break;
             case Color.BLUE:
                 Front.GetComponent<MeshRenderer>().material = blue;
+                CardColor = blue;
                 break;
             case Color.YELLOW:
                 Front.GetComponent<MeshRenderer>().material = yellow;
+                CardColor = yellow;
                 break;
             case Color.RED:
                 Front.GetComponent<MeshRenderer>().material = red;
+                CardColor = red;
                 break;
             case Color.GREEN:
                 Front.GetComponent<MeshRenderer>().material = green;
+                CardColor = green;
                 break;
             default:
                 break;
@@ -101,36 +119,27 @@ public class CardController : MonoBehaviour
 
     public void OnMouseUpAsButton()
     {
-   
         Vector3 CardPos = gameObject.transform.position;
         Vector3 MenuPos;
         Debug.Log("Click");
 
         if (location == Location.PLAYER)
         {
-            Debug.Log("Player menu moved");
-
-            Selected.SetActive(true);
+            Selected.transform.position = new Vector3(CardPos.x, (CardPos.y - 1), CardPos.z);
+            Debug.Log("Selected");
 
             MenuPos = new Vector3(CardPos.x, (CardPos.y + 1), (CardPos.z + 400));
             PlayerCardMenu.transform.position = MenuPos;
-
             ComputerCardMenu.transform.position = OffScreen;
-            
-            // Deselect all other cards
-
         }
         else if (location == Location.COMPUTER)
         {
-            Debug.Log("Computer menu moved");
-
-            Selected.SetActive(true);
+            Selected.transform.position = new Vector3(CardPos.x, (CardPos.y - 1), CardPos.z);
+            Debug.Log("Selected");
 
             MenuPos = new Vector3(CardPos.x, (CardPos.y + 1), (CardPos.z - 400));
             ComputerCardMenu.transform.position = MenuPos;
             PlayerCardMenu.transform.position = OffScreen;
-
-            // Deselect all other cards
         }
     }
 }

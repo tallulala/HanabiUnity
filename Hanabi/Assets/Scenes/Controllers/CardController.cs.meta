@@ -4,9 +4,17 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - Card: {fileID: 1568214811776634, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
-  - front: {fileID: 1943379278599386, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
-  - label: {fileID: 102407120443069644, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - Card: {fileID: 1379707864246168, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - Front: {fileID: 1532489183787350, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - HintBox: {fileID: 1103447062777700, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  - Selected: {fileID: 1812788921193222, guid: 5b007dc7a89c54549865635a73df2871, type: 2}
+  - ButtonCont: {instanceID: 0}
+  - PlayerCardMenu: {fileID: 1308439936512524, guid: e52e716ef6abdcd459294171c91d0b2e,
+      type: 2}
+  - ComputerCardMenu: {fileID: 1460134934140946, guid: ffa012cc6a8ca5e47804676e364dd4f1,
+      type: 2}
+  - RankLabel: {fileID: 102804986088627906, guid: ed47dd803fe63af4880dc198cbf89b77,
+      type: 2}
   - white: {fileID: 2100000, guid: 605c78164add013408ea48d6bb0730cc, type: 2}
   - blue: {fileID: 2100000, guid: 2c0880ad411886e4893102cb46d22922, type: 2}
   - yellow: {fileID: 2100000, guid: e0df0e17507a30a4eac0240fa0f6e62a, type: 2}
