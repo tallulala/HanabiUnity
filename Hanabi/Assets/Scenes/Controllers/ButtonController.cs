@@ -14,7 +14,6 @@ public class ButtonController : MonoBehaviour
     public GameObject PlayerCardMenu;
     public GameObject ComputerCardMenu;
     public GameObject Selected;
-    public GameObject HintBox;
 
     public int DeckCount;
 
@@ -28,6 +27,9 @@ public class ButtonController : MonoBehaviour
 
     public Vector3[][] DiscardArea;
     public Vector3[][] PlayArea;
+
+    public int[] CurrentDiscardIdx;
+    public int[] CurrentPlayIdx;
 
     /// Assigns variables
     public void Start()
@@ -44,17 +46,23 @@ public class ButtonController : MonoBehaviour
         DiscardArea = new Vector3[5][];
         PlayArea = new Vector3[5][];
 
+        CurrentDiscardIdx = new int[5];
+        CurrentPlayIdx = new int[5];
+
         /// Instantiate Computer and Player hand positions
         for (int i = 0; i < 5; i++)
         {
-            ComputerHand[i] = new Vector3((800 + (350 * i)), 2, -75);
-            PlayerHand[i] = new Vector3((800 + (350 * i)), 2, -1775);
+            ComputerHand[i] = new Vector3((800 + (350 * i)), 2, -75) + DeckPos;
+            PlayerHand[i] = new Vector3((800 + (350 * i)), 2, -1775) + DeckPos;
         }
 
         /// Instantiate PlayArea positions
         for (int i = 0; i < 5; i++)
         {
             PlayArea[i] = new Vector3[5];
+
+            CurrentPlayIdx[i] = 0;
+
             int j;
 
             for (j = 0; j < 5; j++)
@@ -71,6 +79,7 @@ public class ButtonController : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             DiscardArea[i] = new Vector3[10];
+            CurrentDiscardIdx[i] = 0;
             int k;
 
             for (k = 0; k < 10; k++)
@@ -130,11 +139,6 @@ public class ButtonController : MonoBehaviour
                     thisCard.name = ("Card" + i);
                     thisCard.transform.Rotate(Vector3.right, 180);
 
-                    thisCard.HintBox = HintBox;
-                    thisCard.HintBox.transform.position = OffScreen;
-                    thisCard.HintedRank.text = "";
-                    thisCard.HintedColor = Deck[i].GetComponent<CardController>().grey;
-
                     thisCard.PlayerCardMenu = PlayerCardMenu;
                     thisCard.ComputerCardMenu = ComputerCardMenu;
                     thisCard.Selected = Selected;
@@ -165,16 +169,23 @@ public class ButtonController : MonoBehaviour
         {
             position = pos;
 
-            Deck[DeckCount - 1].transform.Translate(position, Space.World);
-
-            Deck[DeckCount - 1].transform.Rotate(Vector3.right, 180);
-
-            if (player)
-                Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.PLAYER;
-            else
-                Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.COMPUTER;
-            DeckCount--;
+            DealOne(pos, player);
         }
+    }
+
+    public void DealOne(Vector3 position, bool player)
+    {
+        StartCoroutine(Animation(Deck[DeckCount - 1], Deck[DeckCount - 1].transform.position, position));
+
+        // Deck[DeckCount - 1].transform.position = position;
+
+        Deck[DeckCount - 1].transform.Rotate(Vector3.right, 180);
+
+        if (player)
+            Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.PLAYER;
+        else
+            Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.COMPUTER;
+        DeckCount--;
     }
 
     /// Adds cards to new array in 'random' order
@@ -198,5 +209,18 @@ public class ButtonController : MonoBehaviour
             checkDistinct.Add(current);
         }
         return shuffledDeck;
+    }
+
+    // linear interpolation
+    public IEnumerator Animation(GameObject GO, Vector3 start, Vector3 destination)
+    {
+        float theta = 0;
+        while(theta < 1)
+        {
+            theta += Time.deltaTime;
+            GO.transform.position = (1 - theta) * start + theta * destination;
+            yield return new WaitForEndOfFrame();
+        }
+        GO.transform.position = destination;
     }
 }

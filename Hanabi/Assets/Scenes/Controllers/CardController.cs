@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class CardController : MonoBehaviour
@@ -32,6 +33,8 @@ public class CardController : MonoBehaviour
     public Material green;
     public Material grey;
 
+    public int idx;
+
     public Color color;
     public Rank rank;
 
@@ -39,7 +42,7 @@ public class CardController : MonoBehaviour
 
     public enum Location 
     {
-           PLAYER, COMPUTER, BOARD, DECK, TRASH
+        PLAYER, COMPUTER, BOARD, DECK, TRASH
     };
 
     public enum Rank : int
@@ -54,10 +57,9 @@ public class CardController : MonoBehaviour
 
     public void Start()
     {
-        HintBox.transform.position = OffScreen;
+        HintBox.SetActive(false);
         HintedColor = grey;
         HintedRank.text = "";
-        
     }
 
     public void SetColor(int toColor)
@@ -117,6 +119,25 @@ public class CardController : MonoBehaviour
         }
     }
 
+    public string getColorName()
+    {
+        switch (color)
+        {
+            case Color.WHITE:
+                return "white";
+            case Color.BLUE:
+                return "blue";
+            case Color.YELLOW:
+                return "yellow";
+            case Color.RED:
+                return "red";
+            case Color.GREEN:
+                return "green";
+            default:
+                return "";
+        }
+    }
+
     public void OnMouseUpAsButton()
     {
         Vector3 CardPos = gameObject.transform.position;
@@ -130,6 +151,7 @@ public class CardController : MonoBehaviour
 
             MenuPos = new Vector3(CardPos.x, (CardPos.y + 1), (CardPos.z + 400));
             PlayerCardMenu.transform.position = MenuPos;
+            PlayerCardMenu.GetComponent<PlayOptionsController>().CardCont = this;
             ComputerCardMenu.transform.position = OffScreen;
         }
         else if (location == Location.COMPUTER)
@@ -139,6 +161,7 @@ public class CardController : MonoBehaviour
 
             MenuPos = new Vector3(CardPos.x, (CardPos.y + 1), (CardPos.z - 400));
             ComputerCardMenu.transform.position = MenuPos;
+            ComputerCardMenu.GetComponent<PlayOptionsController>().CardCont = this;
             PlayerCardMenu.transform.position = OffScreen;
         }
     }
