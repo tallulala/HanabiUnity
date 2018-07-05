@@ -3,7 +3,18 @@ guid: 16272e3440b652c4681090aefbe589e5
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - HintBox: {fileID: 1961871652083742, guid: b6cece71007235644987b7387e160925, type: 2}
+  - CardCont: {instanceID: 0}
+  - ButtonCont: {instanceID: 0}
+  - TokenCont: {instanceID: 0}
+  - Rank: {instanceID: 0}
+  - Color: {instanceID: 0}
+  - Play: {instanceID: 0}
+  - Disc: {instanceID: 0}
+  - Moves: {instanceID: 0}
+  - Turn: {instanceID: 0}
+  - MovesLog: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

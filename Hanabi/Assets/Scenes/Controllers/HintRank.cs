@@ -9,5 +9,4 @@ public class HintRank : MonoBehaviour
     {
         playOpt.YourMove(0);
     }
-
 }

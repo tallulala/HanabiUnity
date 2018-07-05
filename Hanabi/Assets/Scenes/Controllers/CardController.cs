@@ -40,7 +40,7 @@ public class CardController : MonoBehaviour
 
     public Location location;
 
-    public enum Location 
+    public enum Location
     {
         PLAYER, COMPUTER, BOARD, DECK, TRASH
     };

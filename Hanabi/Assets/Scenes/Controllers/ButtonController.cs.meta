@@ -4,6 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - token: {fileID: 1971477680968702, guid: d6a602c1b2739774e808f232571f58de, type: 2}
   - Card: {fileID: 1379707864246168, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   - Front: {fileID: 1532489183787350, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   - PlayerCardMenu: {fileID: 1308439936512524, guid: e52e716ef6abdcd459294171c91d0b2e,

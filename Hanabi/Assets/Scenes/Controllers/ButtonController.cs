@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour
 {
-
+    
     public GameObject Card;
     public GameObject Front;
     public GameObject[] Deck;
@@ -14,7 +14,7 @@ public class ButtonController : MonoBehaviour
     public GameObject PlayerCardMenu;
     public GameObject ComputerCardMenu;
     public GameObject Selected;
-
+    
     public int DeckCount;
 
     public int[] RankCount = { 3, 2, 2, 2, 1 };
@@ -28,8 +28,8 @@ public class ButtonController : MonoBehaviour
     public Vector3[][] DiscardArea;
     public Vector3[][] PlayArea;
 
-    public int[] CurrentDiscardIdx;
-    public int[] CurrentPlayIdx;
+    public int[] DiscardIdx;
+    public int[] PlayIdx;
 
     /// Assigns variables
     public void Start()
@@ -40,14 +40,15 @@ public class ButtonController : MonoBehaviour
 
         OffScreen = new Vector3(6000000f, 0f, 6000000f);
 
+        /// Hands, play area, discard area
         ComputerHand = new Vector3[5];
         PlayerHand = new Vector3[5];
 
         DiscardArea = new Vector3[5][];
         PlayArea = new Vector3[5][];
 
-        CurrentDiscardIdx = new int[5];
-        CurrentPlayIdx = new int[5];
+        DiscardIdx = new int[5];
+        PlayIdx = new int[5];
 
         /// Instantiate Computer and Player hand positions
         for (int i = 0; i < 5; i++)
@@ -61,7 +62,7 @@ public class ButtonController : MonoBehaviour
         {
             PlayArea[i] = new Vector3[5];
 
-            CurrentPlayIdx[i] = 0;
+            PlayIdx[i] = 0;
 
             int j;
 
@@ -79,7 +80,7 @@ public class ButtonController : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             DiscardArea[i] = new Vector3[10];
-            CurrentDiscardIdx[i] = 0;
+            DiscardIdx[i] = 0;
             int k;
 
             for (k = 0; k < 10; k++)
@@ -130,7 +131,7 @@ public class ButtonController : MonoBehaviour
                 for (int k = 0; k < count; k++)
                 {
                     Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
-                    Deck[i].SetActive(true);
+                    //Deck[i].SetActive(true);
 
                     thisCard = Deck[i].GetComponent<CardController>();
 
@@ -138,6 +139,7 @@ public class ButtonController : MonoBehaviour
 
                     thisCard.name = ("Card" + i);
                     thisCard.transform.Rotate(Vector3.right, 180);
+                    thisCard.RankLabel.gameObject.SetActive(false);
 
                     thisCard.PlayerCardMenu = PlayerCardMenu;
                     thisCard.ComputerCardMenu = ComputerCardMenu;
@@ -163,12 +165,8 @@ public class ButtonController : MonoBehaviour
     /// @param Hand array of positions in a certain players hand
     public void Deal(Vector3[] hand, bool player)
     {
-        Vector3 position;
-
         foreach (Vector3 pos in hand)
         {
-            position = pos;
-
             DealOne(pos, player);
         }
     }
@@ -179,12 +177,18 @@ public class ButtonController : MonoBehaviour
 
         // Deck[DeckCount - 1].transform.position = position;
 
-        Deck[DeckCount - 1].transform.Rotate(Vector3.right, 180);
+        // Deck[DeckCount - 1].GetComponent<CardController>().RankLabel.text = Deck[DeckCount - 1].GetComponent<CardController>();
 
         if (player)
+        {
             Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.PLAYER;
+        }
         else
+        {
             Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.COMPUTER;
+            Deck[DeckCount - 1].transform.Rotate(Vector3.right, 180);
+            Deck[DeckCount - 1].GetComponent<CardController>().RankLabel.gameObject.SetActive(true);
+        }
         DeckCount--;
     }
 
@@ -215,7 +219,7 @@ public class ButtonController : MonoBehaviour
     public IEnumerator Animation(GameObject GO, Vector3 start, Vector3 destination)
     {
         float theta = 0;
-        while(theta < 1)
+        while (theta < 1)
         {
             theta += Time.deltaTime;
             GO.transform.position = (1 - theta) * start + theta * destination;

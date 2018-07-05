@@ -7,15 +7,10 @@ public class PlayOptionsController : MonoBehaviour
 {
     public bool IsPlayerTurn;
 
-    public CardController CardCont;
-    public ButtonController ButtonCont;
-
     public GameObject HintBox;
 
-    public int PlayAreaIndex1 = 0;
-    public int PlayAreaIndex2 = 0;
-    public int DiscardAreaIdx1 = 0;
-    public int DiscardAreaIdx2 = 0;
+    public CardController CardCont;
+    public TokenController TokenCont;
 
     public TextMesh Rank;
     public TextMesh Color;
@@ -38,22 +33,18 @@ public class PlayOptionsController : MonoBehaviour
         RANK, COLOR, PLAY, DISC
     };
 
-    public void Start()
-    {
-
-    }
-
     public void YourMove(int opt)
     {
         if (IsPlayerTurn)
         {
             player = "The Computer ";
-        } else
+        }
+        else
         {
             player = "You ";
         }
 
-        MoveOption = (Options) opt;
+        MoveOption = (Options)opt;
 
         switch (MoveOption)
         {
@@ -76,11 +67,11 @@ public class PlayOptionsController : MonoBehaviour
 
     public void HintRank()
     {
-        // decrement hint tokens
-
         CardCont.HintBox.SetActive(true);
         CardCont.HintedRank.text = CardCont.RankLabel.text;
+        TokenCont.RemoveHint();
 
+        /// Log move in scroll view
         if (IsPlayerTurn)
         {
             MovesLog.text = ("You hinted your oponent's " + CardCont.RankLabel.text + " cards.\n\n") + MovesLog.text;
@@ -95,45 +86,39 @@ public class PlayOptionsController : MonoBehaviour
 
     public void HintColor()
     {
-        // decrement hint tokens
-
         CardCont.HintBox.SetActive(true);
         CardCont.HintBox.GetComponent<MeshRenderer>().material = CardCont.CardColor;
+        TokenCont.RemoveHint();
 
+        /// Log move in scroll view
         if (IsPlayerTurn)
         {
             MovesLog.text = ("You hinted your oponent's " + CardCont.getColorName() + " cards.\n\n") + MovesLog.text;
-        } else
+        }
+        else
         {
             MovesLog.text = ("Your oponent hinted your " + CardCont.getColorName() + " cards.\n\n") + MovesLog.text;
         }
+
 
         NewTurn();
     }
 
     public void PlayCard()
     {
-
-        Debug.Log("Card Played!");
-
         bool ValidMove = true;
-        // Check if valid move
-        // if yes, move to correct spot in play field
-        // if card has rank 5 increment hint tokens
-        // if no move to correct spot in discard pile
-        // increment hint tokens ?
-        // decrement mistakes counter
 
-        // disable selection
+        if (CardCont.location == CardController.Location.PLAYER)
+        {
+            CardCont.transform.Rotate(Vector3.right, 180);
+            CardCont.RankLabel.gameObject.SetActive(true);
+        }
+
         CardCont.ButtonCont.Selected.transform.position = CardCont.OffScreen;
-
-        // disable menu
         gameObject.transform.position = CardCont.OffScreen;
-
-        // deal new card
         CardCont.ButtonCont.DealOne(CardCont.transform.position, true);
 
-        if((int) CardCont.rank != CardCont.ButtonCont.CurrentPlayIdx[(int)CardCont.color])
+        if ((int)CardCont.rank != CardCont.ButtonCont.PlayIdx[(int)CardCont.color])
         {
             ValidMove = false;
         }
@@ -141,22 +126,28 @@ public class PlayOptionsController : MonoBehaviour
         if (!ValidMove)
         {
             CardCont.location = CardController.Location.TRASH;
-
-            CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.CurrentDiscardIdx[(int)CardCont.color]];
-
-            CardCont.ButtonCont.CurrentDiscardIdx[(int)CardCont.color]++;
-        } else
+            CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
+            CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]++;
+            TokenCont.RemoveMistake();
+        }
+        else
         {
             CardCont.location = CardController.Location.BOARD;
-            CardCont.transform.position = CardCont.ButtonCont.PlayArea[(int) CardCont.color][(int) CardCont.rank];
-            CardCont.ButtonCont.CurrentPlayIdx[(int)CardCont.color]++;
+            CardCont.transform.position = CardCont.ButtonCont.PlayArea[(int)CardCont.color][(int)CardCont.rank];
+            CardCont.ButtonCont.PlayIdx[(int)CardCont.color]++;
+
+            if (CardCont.rank == CardController.Rank.FIVE)
+            {
+                TokenCont.AddHint();
+            }
         }
 
-
-        if (IsPlayerTurn) {
+        /// Log move in scroll view
+        if (IsPlayerTurn)
+        {
             if (ValidMove)
             {
-                MovesLog.text = ("You played your " + CardCont.getColorName() + 
+                MovesLog.text = ("You played your " + CardCont.getColorName() +
                     CardCont.RankLabel.text + " card.\n\n") + MovesLog.text;
             }
             else
@@ -164,7 +155,8 @@ public class PlayOptionsController : MonoBehaviour
                 MovesLog.text = ("You attempted to play your " + CardCont.getColorName() +
                     CardCont.RankLabel.text + " card, but it was discarded.\n\n") + MovesLog.text;
             }
-        } else
+        }
+        else
         {
             if (ValidMove)
             {
@@ -183,28 +175,26 @@ public class PlayOptionsController : MonoBehaviour
 
     public void Discard()
     {
-        Debug.Log("Card discarded!");
+        if (CardCont.location == CardController.Location.PLAYER)
+        {
+            CardCont.transform.Rotate(Vector3.right, 180);
+            CardCont.RankLabel.gameObject.SetActive(true);
+        }
 
-        // disable selection
         CardCont.ButtonCont.Selected.transform.position = CardCont.OffScreen;
-
-        // disable menu
         gameObject.transform.position = CardCont.OffScreen;
-
-        // deal new card
         CardCont.ButtonCont.DealOne(CardCont.transform.position, true);
 
-        // return hint
-
         CardCont.location = CardController.Location.TRASH;
+        CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
+        CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]++;
 
-        CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int) CardCont.color][CardCont.ButtonCont.CurrentDiscardIdx[(int) CardCont.color]];
+        TokenCont.AddHint();
 
-        CardCont.ButtonCont.CurrentDiscardIdx[(int) CardCont.color]++;
-      
+        /// Log move in scroll view
         if (IsPlayerTurn)
         {
-            MovesLog.text = ("You discarded your " + CardCont.getColorName() + 
+            MovesLog.text = ("You discarded your " + CardCont.getColorName() +
                 CardCont.RankLabel.text + " card.\n\n") + MovesLog.text;
         }
         else
