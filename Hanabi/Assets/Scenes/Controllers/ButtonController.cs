@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour
 {
-    
     public GameObject Card;
     public GameObject Front;
     public GameObject[] Deck;
@@ -53,8 +52,8 @@ public class ButtonController : MonoBehaviour
         /// Instantiate Computer and Player hand positions
         for (int i = 0; i < 5; i++)
         {
-            ComputerHand[i] = new Vector3((800 + (350 * i)), 2, -75) + DeckPos;
-            PlayerHand[i] = new Vector3((800 + (350 * i)), 2, -1775) + DeckPos;
+            ComputerHand[i] = new Vector3((800 + (400 * i)), 2, -80) + DeckPos;
+            PlayerHand[i] = new Vector3((800 + (400 * i)), 2, -1780) + DeckPos;
         }
 
         /// Instantiate PlayArea positions

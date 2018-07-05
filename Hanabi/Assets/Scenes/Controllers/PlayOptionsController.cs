@@ -8,9 +8,9 @@ public class PlayOptionsController : MonoBehaviour
     public bool IsPlayerTurn;
 
     public GameObject HintBox;
+    public GameObject Token;
 
     public CardController CardCont;
-    public TokenController TokenCont;
 
     public TextMesh Rank;
     public TextMesh Color;
@@ -69,7 +69,7 @@ public class PlayOptionsController : MonoBehaviour
     {
         CardCont.HintBox.SetActive(true);
         CardCont.HintedRank.text = CardCont.RankLabel.text;
-        TokenCont.RemoveHint();
+        Token.GetComponent<TokenController>().RemoveHint();
 
         /// Log move in scroll view
         if (IsPlayerTurn)
@@ -88,7 +88,7 @@ public class PlayOptionsController : MonoBehaviour
     {
         CardCont.HintBox.SetActive(true);
         CardCont.HintBox.GetComponent<MeshRenderer>().material = CardCont.CardColor;
-        TokenCont.RemoveHint();
+        Token.GetComponent<TokenController>().RemoveHint();
 
         /// Log move in scroll view
         if (IsPlayerTurn)
@@ -128,7 +128,7 @@ public class PlayOptionsController : MonoBehaviour
             CardCont.location = CardController.Location.TRASH;
             CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
             CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]++;
-            TokenCont.RemoveMistake();
+            Token.GetComponent<TokenController>().RemoveMistake();
         }
         else
         {
@@ -138,7 +138,7 @@ public class PlayOptionsController : MonoBehaviour
 
             if (CardCont.rank == CardController.Rank.FIVE)
             {
-                TokenCont.AddHint();
+                Token.GetComponent<TokenController>().AddHint();
             }
         }
 
@@ -189,7 +189,7 @@ public class PlayOptionsController : MonoBehaviour
         CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
         CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]++;
 
-        TokenCont.AddHint();
+        Token.GetComponent<TokenController>().AddHint();
 
         /// Log move in scroll view
         if (IsPlayerTurn)

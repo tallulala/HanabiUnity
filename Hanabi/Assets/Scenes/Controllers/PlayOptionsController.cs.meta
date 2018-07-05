@@ -5,8 +5,8 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - HintBox: {fileID: 1961871652083742, guid: b6cece71007235644987b7387e160925, type: 2}
+  - Token: {fileID: 1390447031929134, guid: d6a602c1b2739774e808f232571f58de, type: 2}
   - CardCont: {instanceID: 0}
-  - ButtonCont: {instanceID: 0}
   - TokenCont: {instanceID: 0}
   - Rank: {instanceID: 0}
   - Color: {instanceID: 0}

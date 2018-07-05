@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TokenController : MonoBehaviour {
-
+public class TokenController : MonoBehaviour
+{
     public GameObject Token;
 
     public Material HintMat;
@@ -17,32 +17,6 @@ public class TokenController : MonoBehaviour {
 
     public int HintIdx = 7;
     public int MistakeIdx = 2;
-
-
-    // Use this for initialization
-    void Start () {
-        /// Hint and Mistake tokens
-        Hints = new GameObject[8];
-        HintTokenPos = new Vector3[8];
-        Mistakes = new GameObject[3];
-        MistakeTokenPos = new Vector3[3];
-
-        /// Mistake tokens
-        for (int j = 0; j < 3; j++)
-        {
-            MistakeTokenPos[j] = new Vector3((1745 + j * 250), 30, 1050);
-            Mistakes[j] = Instantiate(Token, MistakeTokenPos[j], Quaternion.identity);
-            Mistakes[j].GetComponent<MeshRenderer>().material = MistakeMat;
-        }
-
-        /// Hint tokens
-        for (int i = 0; i < 8; i++)
-        {
-            HintTokenPos[i] = new Vector3((-600 + i * 250), 30, 1050);
-            Hints[i] = Instantiate(Token, HintTokenPos[i], Quaternion.identity);
-            Hints[i].GetComponent<MeshRenderer>().material = HintMat;
-        }
-    }
 
     public void RemoveHint()
     {

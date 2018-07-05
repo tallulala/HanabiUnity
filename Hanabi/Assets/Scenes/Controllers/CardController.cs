@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class CardController : MonoBehaviour
 {
-    public GameObject Card;
     public GameObject Front;
     public GameObject HintBox;
     public GameObject Selected;
