@@ -18,17 +18,44 @@ public class TokenController : MonoBehaviour
     public int HintIdx = 7;
     public int MistakeIdx = 2;
 
+    private void Start()
+    {
+        HintTokenPos = new Vector3[8];
+        MistakeTokenPos = new Vector3[3];
+
+        Hints = new GameObject[8];
+        Mistakes = new GameObject[3];
+
+        for (int i = 0; i < 8; i++)
+        {
+            HintTokenPos[i] = new Vector3((-300 + (i * 600)), 10, 1700);
+            Hints[i] = Instantiate(Token, HintTokenPos[i], Quaternion.identity);
+            Hints[i].GetComponent<MeshRenderer>().material = HintMat;
+        }
+
+        for (int j = 0; j < 3; j++)
+        {
+            MistakeTokenPos[j] = new Vector3((5000 + (j * 600)), 10, 1700);
+            Mistakes[j] = Instantiate(Token, MistakeTokenPos[j], Quaternion.identity);
+            Mistakes[j].GetComponent<MeshRenderer>().material = MistakeMat;
+        }
+    }
+
     public void RemoveHint()
     {
+        Debug.Log("HintCounter is " + HintIdx);
+        Debug.Log("Hints length: " + Hints.Length);
+        
         if (HintIdx == 0)
         {
             /// INVALID MOVE
             Debug.Log("INVALID MOVE");
+            return;
         }
         Hints[HintIdx].GetComponent<MeshRenderer>().material = Grey;
         HintIdx--;
 
-        Debug.Log("Color Hinted. " + "HintCounter is " + HintIdx);
+        Debug.Log("Hint Given. " + "HintCounter is " + HintIdx);
     }
 
     public void AddHint()
@@ -48,11 +75,16 @@ public class TokenController : MonoBehaviour
         MistakeIdx--;
         if (MistakeIdx < 0)
         {
-            //END GAME
-            Debug.Log("GAME OVER");
+            GameOver();
         }
 
         Debug.Log("Mistake made. " + "MistakeCounter is " + MistakeIdx);
     }
 
+    public void GameOver()
+    {
+        //END GAME
+        Debug.Log("GAME OVER");
+        return;
+    }
 }

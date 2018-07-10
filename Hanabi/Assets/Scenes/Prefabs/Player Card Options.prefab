@@ -128,7 +128,7 @@ Transform:
   m_GameObject: {fileID: 1308439936512524}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6000000, y: 0, z: 6000000}
-  m_LocalScale: {x: 600, y: 1, z: 500}
+  m_LocalScale: {x: 3000, y: 1, z: 2500}
   m_Children:
   - {fileID: 4875441777194398}
   - {fileID: 4897995508259260}
@@ -559,14 +559,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPlayerTurn: 1
-  HintBox: {fileID: 0}
+  Score: 0
+  ScoreText: {fileID: 114150191674296676, guid: 0a0de78f817c2074a902a089b545d635,
+    type: 2}
+  HintBox: {fileID: 1103447062777700, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
+  Background: {fileID: 1519268767235322, guid: 55e2204162172c642b769b329682f88a, type: 2}
   CardCont: {fileID: 0}
-  TokenCont: {fileID: 0}
   Rank: {fileID: 0}
   Color: {fileID: 0}
   Play: {fileID: 0}
   Disc: {fileID: 0}
-  Moves: {fileID: 0}
+  Moves: {fileID: 114465666929122750, guid: 0c68492a210c22143af83bed2178e13c, type: 2}
   Turn: {fileID: 0}
   MovesLog: {fileID: 0}
   player: 

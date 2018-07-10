@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33445272123788206}
   - component: {fileID: 23054638070304804}
   - component: {fileID: 136417110946966264}
-  - component: {fileID: 114370286118305564}
   m_Layer: 0
   m_Name: Token
   m_TagString: Untagged
@@ -69,7 +68,7 @@ Transform:
   m_GameObject: {fileID: 1429689993009116}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1400, y: 11, z: 1054}
-  m_LocalScale: {x: 200, y: 5, z: 200}
+  m_LocalScale: {x: 450, y: 5, z: 450}
   m_Children:
   - {fileID: 4636345268580762}
   m_Father: {fileID: 0}
@@ -159,46 +158,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1585224024335298}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114370286118305564
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1429689993009116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90de7bcc18f7d85479f687983e2a854d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Token: {fileID: 1429689993009116}
-  HintMat: {fileID: 2100000, guid: 780008dac4645b849989edd7130174fa, type: 2}
-  MistakeMat: {fileID: 2100000, guid: 122188f20ff586547831d2bb8fe3fb8b, type: 2}
-  Grey: {fileID: 2100000, guid: cd51b1953ad43cc40a6bafd5b8bf6417, type: 2}
-  Hints:
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  Mistakes:
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  - {fileID: 1429689993009116}
-  HintTokenPos:
-  - {x: 0, y: 5, z: 1040}
-  - {x: 0, y: 5, z: 1040}
-  - {x: 0, y: 5, z: 1040}
-  - {x: 0, y: 5, z: 1040}
-  - {x: 0, y: 5, z: 1040}
-  - {x: 0, y: 5, z: 1040}
-  - {x: 0, y: 5, z: 1040}
-  - {x: 0, y: 5, z: 1040}
-  MistakeTokenPos: []
-  HintIdx: 5
-  MistakeIdx: 1
 --- !u!136 &136202958412314170
 CapsuleCollider:
   m_ObjectHideFlags: 1

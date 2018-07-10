@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 65764931699425876}
   - component: {fileID: 54284011285798950}
   - component: {fileID: 114539841333262088}
+  - component: {fileID: 114105857407805730}
   m_Layer: 0
   m_Name: Card
   m_TagString: Card
@@ -326,7 +327,7 @@ Transform:
   m_GameObject: {fileID: 1379707864246168}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4411, y: 25.000023, z: 225}
-  m_LocalScale: {x: 300, y: 25, z: 300}
+  m_LocalScale: {x: 550, y: 25, z: 550}
   m_Children:
   - {fileID: 4792354163296844}
   - {fileID: 4025551936845362}
@@ -1035,6 +1036,17 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
+--- !u!114 &114105857407805730
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1379707864246168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d87d489c55fc504987b709bbe1e4ec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114539841333262088
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1049,10 +1061,14 @@ MonoBehaviour:
   Front: {fileID: 1532489183787350}
   HintBox: {fileID: 1103447062777700}
   Selected: {fileID: 1812788921193222, guid: 5b007dc7a89c54549865635a73df2871, type: 2}
+  Background: {fileID: 1379707864246168}
   ButtonCont: {fileID: 0}
+  AiCont: {fileID: 0}
   OffScreen: {x: 6000000, y: 0, z: 6000000}
-  PlayerCardMenu: {fileID: 0}
-  ComputerCardMenu: {fileID: 0}
+  MoveCardOptions: {fileID: 1308439936512524, guid: e52e716ef6abdcd459294171c91d0b2e,
+    type: 2}
+  HintOptions: {fileID: 1460134934140946, guid: ffa012cc6a8ca5e47804676e364dd4f1,
+    type: 2}
   RankLabel: {fileID: 102695513147646144}
   HintedRank: {fileID: 102763861191540944}
   CardColor: {fileID: 0}

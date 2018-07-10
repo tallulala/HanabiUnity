@@ -13,6 +13,7 @@ public class ButtonController : MonoBehaviour
     public GameObject PlayerCardMenu;
     public GameObject ComputerCardMenu;
     public GameObject Selected;
+    public GameObject Background;
     
     public int DeckCount;
 
@@ -33,7 +34,7 @@ public class ButtonController : MonoBehaviour
     /// Assigns variables
     public void Start()
     {
-        DeckPos = new Vector3(-1365, 25, 570);
+        DeckPos = new Vector3(-2200, 25, 250);
 
         Deck = new GameObject[50];
 
@@ -52,8 +53,8 @@ public class ButtonController : MonoBehaviour
         /// Instantiate Computer and Player hand positions
         for (int i = 0; i < 5; i++)
         {
-            ComputerHand[i] = new Vector3((800 + (400 * i)), 2, -80) + DeckPos;
-            PlayerHand[i] = new Vector3((800 + (400 * i)), 2, -1780) + DeckPos;
+            ComputerHand[i] = new Vector3((1800 + (800 * i)), 2, 200) + DeckPos;
+            PlayerHand[i] = new Vector3((1800 + (800 * i)), 2, -3350) + DeckPos;
         }
 
         /// Instantiate PlayArea positions
@@ -67,7 +68,7 @@ public class ButtonController : MonoBehaviour
 
             for (j = 0; j < 5; j++)
             {
-                PlayArea[i][j] = new Vector3((-550 + (350 * i)), (25 + (j * 2)), (-100 - (100 * j)));
+                PlayArea[i][j] = new Vector3((-400 + (800 * i)), (25 + (j * 2)), (-650 - (350 * j)));
                 //Use for testing:
                 //Instantiate(Card, PlayArea[i][j], Quaternion.identity);
             }
@@ -84,9 +85,9 @@ public class ButtonController : MonoBehaviour
 
             for (k = 0; k < 10; k++)
             {
-                DiscardArea[i][k] = new Vector3(1450 + (100 * k), (25 + (k * 2)), (400 - (400 * i)));
+                DiscardArea[i][k] = new Vector3(4000 + (350 * k), (25 + (k * 2)), (500 - (900 * i)));
                 //Use for testing:
-                //Instantiate(Card, DiscardArea[i][k], Quaternion.identity);
+                // Instantiate(Card, DiscardArea[i][k], Quaternion.identity);
             }
 
             k = 0;
@@ -108,6 +109,8 @@ public class ButtonController : MonoBehaviour
         Deck = Shuffle(Deck);
 
         Deal(PlayerHand, true);
+        StartCoroutine(Wait(1));
+        Debug.Log("Switching Hands");
         Deal(ComputerHand, false);
     }
 
@@ -130,7 +133,6 @@ public class ButtonController : MonoBehaviour
                 for (int k = 0; k < count; k++)
                 {
                     Deck[i] = Instantiate(Card, DeckPos, Quaternion.identity);
-                    //Deck[i].SetActive(true);
 
                     thisCard = Deck[i].GetComponent<CardController>();
 
@@ -140,8 +142,8 @@ public class ButtonController : MonoBehaviour
                     thisCard.transform.Rotate(Vector3.right, 180);
                     thisCard.RankLabel.gameObject.SetActive(false);
 
-                    thisCard.PlayerCardMenu = PlayerCardMenu;
-                    thisCard.ComputerCardMenu = ComputerCardMenu;
+                    thisCard.MoveCardOptions = PlayerCardMenu;
+                    thisCard.HintOptions = ComputerCardMenu;
                     thisCard.Selected = Selected;
 
                     thisCard.location = CardController.Location.DECK;
@@ -166,29 +168,36 @@ public class ButtonController : MonoBehaviour
     {
         foreach (Vector3 pos in hand)
         {
+            Wait(0.5f);
             DealOne(pos, player);
         }
     }
 
-    public void DealOne(Vector3 position, bool player)
+    public GameObject DealOne(Vector3 position, bool player)
     {
-        StartCoroutine(Animation(Deck[DeckCount - 1], Deck[DeckCount - 1].transform.position, position));
+        GameObject card = Deck[DeckCount - 1];
 
-        // Deck[DeckCount - 1].transform.position = position;
-
-        // Deck[DeckCount - 1].GetComponent<CardController>().RankLabel.text = Deck[DeckCount - 1].GetComponent<CardController>();
-
-        if (player)
+        if (Deck[0] == null)
         {
-            Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.PLAYER;
+            Background.GetComponent<TokenController>().GameOver();
         }
         else
         {
-            Deck[DeckCount - 1].GetComponent<CardController>().location = CardController.Location.COMPUTER;
-            Deck[DeckCount - 1].transform.Rotate(Vector3.right, 180);
-            Deck[DeckCount - 1].GetComponent<CardController>().RankLabel.gameObject.SetActive(true);
+            StartCoroutine(Animation(card, card.transform.position, position));
+
+            if (player)
+            {
+                card.GetComponent<CardController>().location = CardController.Location.PLAYER;
+            }
+            else
+            {
+                card.GetComponent<CardController>().location = CardController.Location.COMPUTER;
+                card.transform.Rotate(Vector3.right, 180);
+                card.GetComponent<CardController>().RankLabel.gameObject.SetActive(true);
+            }
+            DeckCount--;
         }
-        DeckCount--;
+        return card;
     }
 
     /// Adds cards to new array in 'random' order
@@ -225,5 +234,12 @@ public class ButtonController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         GO.transform.position = destination;
+    }
+
+    public IEnumerator Wait(float sec)
+    {
+        Debug.Log("Waiting");
+        yield return new WaitForSeconds(sec);
+        Debug.Log("Waited");
     }
 }
