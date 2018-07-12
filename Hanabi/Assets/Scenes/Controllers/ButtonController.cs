@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Connected to the StartGame GameObject
+/// </summary>
 public class ButtonController : MonoBehaviour
 {
     public GameObject Card;
@@ -69,7 +72,7 @@ public class ButtonController : MonoBehaviour
             for (j = 0; j < 5; j++)
             {
                 PlayArea[i][j] = new Vector3((-400 + (800 * i)), (25 + (j * 2)), (-650 - (350 * j)));
-                //Use for testing:
+                /// Use for testing:
                 //Instantiate(Card, PlayArea[i][j], Quaternion.identity);
             }
 
@@ -86,7 +89,7 @@ public class ButtonController : MonoBehaviour
             for (k = 0; k < 10; k++)
             {
                 DiscardArea[i][k] = new Vector3(4000 + (350 * k), (25 + (k * 2)), (500 - (900 * i)));
-                //Use for testing:
+                /// Use for testing:
                 // Instantiate(Card, DiscardArea[i][k], Quaternion.identity);
             }
 
@@ -94,9 +97,9 @@ public class ButtonController : MonoBehaviour
         }
     }
 
-    /// Clicking the start button
-    /// Generates and shuffles deck
-    /// Deals five cards to each player
+    /// <summary>
+    /// Generates and shuffles the deck. Deals five cards to each player
+    /// </summary>
     public void OnClick()
     {
         gameObject.transform.position = OffScreen;
@@ -105,13 +108,23 @@ public class ButtonController : MonoBehaviour
         Selected.transform.position = OffScreen;
 
         Deck = MakeDeck();
-
         Deck = Shuffle(Deck);
 
-        Deal(PlayerHand, true);
-        StartCoroutine(Wait(1));
+        StartCoroutine(DealHands());
+
+        return;
+    }
+
+    /// <summary>
+    /// Pauses in between dealing the players hand and the computer's hand for visual clarity
+    /// </summary>
+    /// <returns>IEnumerator, WaitForSeconds()</returns>
+    public IEnumerator DealHands()
+    {
+        DealToHand(PlayerHand, true);
         Debug.Log("Switching Hands");
-        Deal(ComputerHand, false);
+        yield return new WaitForSeconds(3);
+        DealToHand(ComputerHand, false);
     }
 
     /// Generates 50 cards objects, adds color and rank to each card
@@ -162,19 +175,32 @@ public class ButtonController : MonoBehaviour
         return Deck;
     }
 
+    /// <summary>
     /// Deals cards to each position in a specified hand
-    /// @param Hand array of positions in a certain players hand
-    public void Deal(Vector3[] hand, bool player)
+    /// </summary>
+    /// <param name="hand">The positions in the specified hand</param>
+    /// <param name="player">The player whose hand should be dealt to</param>
+    public void DealToHand(Vector3[] hand, bool player)
     {
+        float i = 0.5f;
         foreach (Vector3 pos in hand)
         {
-            Wait(0.5f);
-            DealOne(pos, player);
+            Debug.Log("Dealing next card...");
+            DealOne(pos, player, i);
+            Debug.Log("Coroutine executed");
+            i += 0.5f;
         }
     }
 
-    public GameObject DealOne(Vector3 position, bool player)
+    /// <summary>
+    /// Deals one card to the specified position
+    /// </summary>
+    /// <param name="position">The position that the card should be placed</param>
+    /// <param name="player">Specifies which hand the card should be dealt to, and whether the card should be face up or face down.</param>
+    /// <returns>The card that was dealt</returns>
+    public GameObject DealOne(Vector3 position, bool player, float delay = 0.0f)
     {
+        
         GameObject card = Deck[DeckCount - 1];
 
         if (Deck[0] == null)
@@ -183,7 +209,7 @@ public class ButtonController : MonoBehaviour
         }
         else
         {
-            StartCoroutine(Animation(card, card.transform.position, position));
+            StartCoroutine(Animation(card, card.transform.position, position, delay));
 
             if (player)
             {
@@ -197,11 +223,16 @@ public class ButtonController : MonoBehaviour
             }
             DeckCount--;
         }
+
+        Debug.Log("Dealing card to: " + position);
         return card;
     }
 
-    /// Adds cards to new array in 'random' order
-    /// @param shuffledDeck temporary deck to add cards to in 'random' order
+    /// <summary>
+    /// Adds cards from the previously instatiated deck, to a new array in 'random' order
+    /// </summary>
+    /// <param name="shuffledDeck">temporary deck to add cards to in 'random' order</param>
+    /// <returns>The shuffled array</returns>
     public GameObject[] Shuffle(GameObject[] shuffledDeck)
     {
         System.Random random = new System.Random();
@@ -223,23 +254,26 @@ public class ButtonController : MonoBehaviour
         return shuffledDeck;
     }
 
-    // linear interpolation
-    public IEnumerator Animation(GameObject GO, Vector3 start, Vector3 destination)
+    /// <summary>
+    /// Makes an object move from one position to another by slowly sliding accross the screen
+    /// TODO: Add sin curve
+    /// </summary>
+    /// <param name="GO">The GameObject to be moved</param>
+    /// <param name="start">The original oposition of the GameObject</param>
+    /// <param name="destination">The ending position of the GameObject</param>
+    /// <returns>IEnumerator wait for end of frame</returns>
+    public IEnumerator Animation(GameObject GO, Vector3 start, Vector3 destination, float delay = 0.0f)
     {
+        yield return new WaitForSeconds(delay);
+
         float theta = 0;
         while (theta < 1)
         {
+            // linear interpolation
             theta += Time.deltaTime;
             GO.transform.position = (1 - theta) * start + theta * destination;
             yield return new WaitForEndOfFrame();
         }
         GO.transform.position = destination;
-    }
-
-    public IEnumerator Wait(float sec)
-    {
-        Debug.Log("Waiting");
-        yield return new WaitForSeconds(sec);
-        Debug.Log("Waited");
     }
 }

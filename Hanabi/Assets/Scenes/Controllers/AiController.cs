@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Connected to the background of the game
+/// All pseudo-random moves. AI does not make any decisions yet.
+/// </summary>
 public class AiController : MonoBehaviour
 {
-    public CardController CardCont;
+    public ButtonController ButtonCont;
     public PlayOptionsController PlayCont;
 
-    public void MakeMove(int Move)
+    /// <summary>
+    /// AI psuedo-randomly chooses a move to make on it's turn
+    /// Called in PlayOptionsController after a player makes their move
+    /// TODO: Add options enum?
+    /// </summary>
+    public void MakeMove()
     {
         System.Random random = new System.Random();
-        Move = random.Next(1, 4);
+        int Move = random.Next(1, 4);
 
         switch (Move)
         {
@@ -30,122 +39,160 @@ public class AiController : MonoBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// Gives the player a hint of all the cards of a certain rank in their hand
+    /// </summary>
     public void HintRank()
     {
-        GameObject thisCard = PickCard(CardController.Location.PLAYER);
-
+        Debug.Log("AI HintRank()");
+        CardController thisCard = PickCard(CardController.Location.PLAYER);
         PlayCont.Background.GetComponent<TokenController>().RemoveHint();
-
-        foreach (GameObject card in CardCont.ButtonCont.Deck)
+        foreach (GameObject card in thisCard.ButtonCont.Deck)
         {
             if (card.GetComponent<CardController>().location == thisCard.GetComponent<CardController>().location)
             {
                 if (card.GetComponent<CardController>().rank == thisCard.GetComponent<CardController>().rank)
                 {
-                    card.GetComponent<CardController>().HintBox.SetActive(true);
-                    card.GetComponent<CardController>().HintedRank.text = CardCont.RankLabel.text;
+                    if (!card.GetComponent<CardController>().HintBox.activeInHierarchy)
+                    {
+                        card.GetComponent<CardController>().HintBox.SetActive(true);
+                        card.GetComponent<CardController>().HintBox.transform.Rotate(Vector3.right, 180);
+                        card.GetComponent<CardController>().HintBox.transform.localPosition = new Vector3(-0.5f, -5, -0.7f);
+                    }
+                    card.GetComponent<CardController>().HintedRank.text = thisCard.RankLabel.text;
                 }
             }
         }
 
-        PlayCont.MovesLog.text = ("The Computer hinted your " + CardCont.RankLabel.text + " cards.\n\n") + PlayCont.MovesLog.text;
-
+        // Add move to scroll view
+        PlayCont.MovesLog.text = ("The Computer hinted your " + thisCard.RankLabel.text + " cards.\n\n") + PlayCont.MovesLog.text;
     }
 
+    /// <summary>
+    /// Gives the player a hint of all the cards of a certain color in their hand
+    /// </summary>
     public void HintColor()
     {
-        GameObject thisCard = PickCard(CardController.Location.PLAYER);
-
+        Debug.Log("AI HintColor()");
+        CardController thisCard = PickCard(CardController.Location.PLAYER);
         PlayCont.Background.GetComponent<TokenController>().RemoveHint();
-
-        foreach (GameObject card in CardCont.ButtonCont.Deck)
+        foreach (GameObject card in thisCard.ButtonCont.Deck)
         {
             if (card.GetComponent<CardController>().location == thisCard.GetComponent<CardController>().location)
             {
                 if (card.GetComponent<CardController>().CardColor == thisCard.GetComponent<CardController>().CardColor)
                 {
-                    card.GetComponent<CardController>().HintBox.SetActive(true);
+                    if (!card.GetComponent<CardController>().HintBox.activeInHierarchy)
+                    {
+                        card.GetComponent<CardController>().HintBox.SetActive(true);
+                        card.GetComponent<CardController>().HintBox.transform.Rotate(Vector3.right, 180);
+                        card.GetComponent<CardController>().HintBox.transform.localPosition = new Vector3(-0.5f, -5, -0.7f);
+                    }
                     card.GetComponent<CardController>().HintBox.GetComponent<MeshRenderer>().material = thisCard.GetComponent<CardController>().CardColor;
                 }
             }
         }
 
-        PlayCont.MovesLog.text = ("The Computer hinted your " + CardCont.GetColorName() + " cards.\n\n") + PlayCont.MovesLog.text;
+        // Add move to scroll view
+        PlayCont.MovesLog.text = ("The Computer hinted your " + thisCard.GetColorName() + " cards.\n\n") + PlayCont.MovesLog.text;
     }
 
+    /// <summary>
+    /// Plays a 'randomly' selected card
+    /// </summary>
     public void PlayCard()
     {
-        GameObject thisCard = PickCard(CardController.Location.COMPUTER);
+        Debug.Log("AI PlayCard()");
+        CardController thisCard = PickCard(CardController.Location.COMPUTER);
 
-        bool ValidMove = true;
         Vector3 startPos = thisCard.GetComponent<CardController>().transform.position;
         Vector3 endPos;
+        bool ValidMove = true;
 
-        if (thisCard.GetComponent<CardController>().rank == CardController.Rank.FIVE)
-        {
-            PlayCont.Background.GetComponent<TokenController>().AddHint();
-        }
+        thisCard.GetComponent<CardController>().HintBox.SetActive(false);
 
-        if ((int)thisCard.GetComponent<CardController>().rank != CardCont.ButtonCont.PlayIdx[(int)CardCont.color])
+        if ((int)thisCard.GetComponent<CardController>().rank != thisCard.ButtonCont.PlayIdx[(int)thisCard.color])
         {
             ValidMove = false;
         }
 
+        thisCard.ButtonCont.DealOne(thisCard.transform.position, false);
+
         if (!ValidMove)
         {
             thisCard.GetComponent<CardController>().location = CardController.Location.TRASH;
-
-            endPos = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
-
-            StartCoroutine(CardCont.ButtonCont.Animation(thisCard, startPos, endPos));
-
             PlayCont.Background.GetComponent<TokenController>().RemoveMistake();
+
+            endPos = thisCard.ButtonCont.DiscardArea[(int)thisCard.color][thisCard.ButtonCont.DiscardIdx[(int)thisCard.color]];
+            StartCoroutine(thisCard.ButtonCont.Animation(thisCard.GetComponent<CardController>().gameObject, startPos, endPos));
+            thisCard.GetComponent<CardController>().ButtonCont.DiscardIdx[(int)thisCard.color]++;
         }
         else
         {
-            CardCont.location = CardController.Location.BOARD;
+            if (thisCard.GetComponent<CardController>().rank == CardController.Rank.FIVE)
+            {
+                PlayCont.Background.GetComponent<TokenController>().AddHint();
+            }
 
-            endPos = CardCont.ButtonCont.PlayArea[(int)CardCont.color][(int)CardCont.rank];
+            thisCard.GetComponent<CardController>().location = CardController.Location.BOARD;
 
-            StartCoroutine(CardCont.ButtonCont.Animation(thisCard, startPos, endPos));
+            endPos = thisCard.ButtonCont.PlayArea[(int)thisCard.color][(int)thisCard.rank];
+            StartCoroutine(thisCard.ButtonCont.Animation(thisCard.GetComponent<CardController>().gameObject, startPos, endPos));
 
             PlayCont.Score++;
             PlayCont.ScoreText.text = "Score: " + PlayCont.Score + "/25";
         }
 
+        // Add move to scroll view
         if (ValidMove)
         {
-            PlayCont.MovesLog.text = ("The Computer played its " + CardCont.GetColorName() +
-                CardCont.RankLabel.text + " card.\n\n") + PlayCont.MovesLog.text;
+            PlayCont.MovesLog.text = ("The Computer played its " + thisCard.GetColorName() +
+                thisCard.RankLabel.text + " card.\n\n") + PlayCont.MovesLog.text;
         }
         else
         {
-            PlayCont.MovesLog.text = ("The Computer attempted to play its " + CardCont.GetColorName() +
-                CardCont.RankLabel.text + " card, but it was discarded.\n\n") + PlayCont.MovesLog.text;
+            PlayCont.MovesLog.text = ("The Computer attempted to play its " + thisCard.GetColorName() +
+                thisCard.RankLabel.text + " card, but it was discarded.\n\n") + PlayCont.MovesLog.text;
         }
     }
 
+    /// <summary>
+    /// Discards a 'randomly' selected card
+    /// </summary>
     public void Discard()
     {
-        GameObject thisCard = PickCard(CardController.Location.COMPUTER);
+        Debug.Log("AI Discard()");
+        CardController thisCard = PickCard(CardController.Location.COMPUTER);
+        Vector3 startPos = thisCard.transform.position;
+        Vector3 endPos;
 
-        CardCont.ButtonCont.DealOne(thisCard.transform.position, true);
-
+        thisCard.GetComponent<CardController>().HintBox.SetActive(false);
         thisCard.GetComponent<CardController>().location = CardController.Location.TRASH;
-        thisCard.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
-        thisCard.GetComponent<CardController>().ButtonCont.DiscardIdx[(int)CardCont.color]++;
-
         PlayCont.Background.GetComponent<TokenController>().AddHint();
 
-        PlayCont.MovesLog.text = ("The Computer discarded its " + CardCont.GetColorName() +
-                CardCont.RankLabel.text + " card.\n\n") + PlayCont.MovesLog.text;
+        endPos = thisCard.ButtonCont.DiscardArea[(int)thisCard.color][thisCard.ButtonCont.DiscardIdx[(int)thisCard.color]];
+
+        thisCard.ButtonCont.DealOne(thisCard.transform.position, false);
+
+        StartCoroutine(thisCard.GetComponent<CardController>().ButtonCont.Animation(thisCard.gameObject, startPos, endPos));
+        thisCard.GetComponent<CardController>().ButtonCont.DiscardIdx[(int)thisCard.color]++;
+
+        // Add move to scroll view
+        PlayCont.MovesLog.text = ("The Computer discarded its " + thisCard.GetColorName() +
+                thisCard.RankLabel.text + " card.\n\n") + PlayCont.MovesLog.text;
     }
 
-    public GameObject PickCard(CardController.Location loc)
+    /// <summary>
+    /// 'Randomly' selects a card from the given hand
+    /// TODO: Have AI pick a card based on it's knowledge of the game
+    /// </summary>
+    /// <param name="loc">The hand from which to select a card. Either 'Player' or 'Computer'.</param>
+    public CardController PickCard(CardController.Location loc)
     {
         GameObject[] cards = new GameObject[5];
         int i = 0;
-        foreach (GameObject card in CardCont.ButtonCont.Deck)
+        foreach (GameObject card in ButtonCont.Deck)
         {
             if (card.GetComponent<CardController>().location == loc)
             {
@@ -155,6 +202,6 @@ public class AiController : MonoBehaviour
         }
 
         System.Random random = new System.Random();
-        return cards[random.Next(0, 4)];
+        return cards[random.Next(0, 5)].GetComponent<CardController>();
     }
 }

@@ -3,39 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Connected to the AICardOptions and the PlayerCardOptions GameObjects
+/// TODO: Make adding moves to the scroll view better -> wording, faster?
+/// </summary>
 public class PlayOptionsController : MonoBehaviour
 {
-    public bool IsPlayerTurn;
+    public CardController CardCont;
 
-    public int Score = 0;
-    public Text ScoreText;
+    public bool IsPlayerTurn;
 
     public GameObject HintBox;
     public GameObject Background;
-
-    public CardController CardCont;
 
     public TextMesh Rank;
     public TextMesh Color;
     public TextMesh Play;
     public TextMesh Disc;
 
+    public int Score = 0;
+    public Text ScoreText;
     public ScrollRect Moves;
-
-    public Text Turn;
     public Text MovesLog;
-
-    public string player;
-    public string move;
-    public string card;
+    public Text Turn;
 
     public Options MoveOption;
 
+    /// <summary>
+    /// Available move options to make on player turn
+    /// </summary>
     public enum Options
     {
         RANK, COLOR, PLAY, DISC
     };
 
+    /// <summary>
+    /// Player chooses a move to make on their turn
+    /// </summary>
+    /// <param name="opt">Corresponds to the option the player chose from one of the pop-up menus after selecting a card</param>
     public void YourMove(int opt)
     {
         MoveOption = (Options)opt;
@@ -57,17 +62,42 @@ public class PlayOptionsController : MonoBehaviour
             default:
                 break;
         }
+        CardCont.ButtonCont.Selected.transform.position = CardCont.OffScreen;
+        gameObject.transform.position = CardCont.OffScreen;
 
-        Turn.text = "Computer's Turn";
+        StartCoroutine(EndOfPlayerTurn());
 
-        System.Random rand = new System.Random();
-        Background.GetComponent<AiController>().MakeMove(rand.Next(1, 4));
-
-        Turn.text = "Your Turn";
+        return;
     }
 
+    ///<summary>
+    /// Tells the Ai to make it's move, then gives control back to player.
+    ///</summary>
+    /// <returns>IEnumerator WaitForSeconds()</returns>
+    public IEnumerator EndOfPlayerTurn()
+    {
+        Debug.Log("Waiting");
+
+        CardCont.ButtonCont.PlayerCardMenu.GetComponent<PlayOptionsController>().Turn.text = "Computer's Turn";
+
+        yield return new WaitForSeconds(1);
+
+        Background.GetComponent<AiController>().MakeMove();
+
+        yield return new WaitForSeconds(1);
+
+        CardCont.ButtonCont.PlayerCardMenu.GetComponent<PlayOptionsController>().Turn.text = "Your Turn";
+
+        Debug.Log("Waited");
+    }
+
+    /// <summary>
+    /// Gives the AI a hint of all the cards of a certain rank in it's hand
+    /// TODO: Add this knowledge to AI's mental state of it's own hand
+    /// </summary>
     public void HintRank()
     {
+        Debug.Log("Player HintRank()");
         Background.GetComponent<TokenController>().RemoveHint();
 
         foreach (GameObject card in CardCont.ButtonCont.Deck)
@@ -82,13 +112,16 @@ public class PlayOptionsController : MonoBehaviour
             }
         }
 
-        /// Log move in scroll view
-
         MovesLog.text = ("You hinted your oponent's " + CardCont.RankLabel.text + " cards.\n\n") + MovesLog.text;
     }
 
+    /// <summary>
+    /// Gives the AI a hint of all the cards of a certain color in it's hand
+    /// TODO: Add this knowledge to AI's mental state of it's own hand
+    /// </summary>
     public void HintColor()
     {
+        Debug.Log("Player HintColor()");
         foreach (GameObject card in CardCont.ButtonCont.Deck)
         {
             if (card.GetComponent<CardController>().location == CardCont.location)
@@ -103,12 +136,17 @@ public class PlayOptionsController : MonoBehaviour
 
         Background.GetComponent<TokenController>().RemoveHint();
 
-        /// Log move in scroll view        
         MovesLog.text = ("You hinted your oponent's " + CardCont.GetColorName() + " cards.\n\n") + MovesLog.text;
     }
 
+    /// <summary>
+    /// Moves the selected card to the proper place in either the play field or the discard pile
+    /// </summary>
     public void PlayCard()
     {
+        Debug.Log("Player PlayCard()");
+        CardCont.HintBox.SetActive(false);
+
         bool ValidMove = true;
         Vector3 startPos = CardCont.transform.position;
         Vector3 endPos;
@@ -132,9 +170,7 @@ public class PlayOptionsController : MonoBehaviour
             endPos = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
 
             StartCoroutine(CardCont.ButtonCont.Animation(CardCont.gameObject, startPos, endPos));
-
-            //CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
-            //CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]++;
+            CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]++;
 
             Background.GetComponent<TokenController>().RemoveMistake();
         }
@@ -145,9 +181,7 @@ public class PlayOptionsController : MonoBehaviour
             endPos = CardCont.ButtonCont.PlayArea[(int)CardCont.color][(int)CardCont.rank];
 
             StartCoroutine(CardCont.ButtonCont.Animation(CardCont.gameObject, startPos, endPos));
-
-            //CardCont.transform.position = CardCont.ButtonCont.PlayArea[(int)CardCont.color][(int)CardCont.rank];
-            //CardCont.ButtonCont.PlayIdx[(int)CardCont.color]++;
+            CardCont.ButtonCont.PlayIdx[(int)CardCont.color]++;
 
             if (CardCont.rank == CardController.Rank.FIVE)
             {
@@ -157,9 +191,7 @@ public class PlayOptionsController : MonoBehaviour
             Score++;
             ScoreText.text = "Score: " + Score + "/25";
         }
-        // tell ai to make move
 
-        /// Log move in scroll view
         if (ValidMove)
         {
             MovesLog.text = ("You played your " + CardCont.GetColorName() +
@@ -172,8 +204,18 @@ public class PlayOptionsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Moves the selected card to the proper place in the discard pile
+    /// TODO: Order discard pile by rank
+    /// </summary>
     public void Discard()
     {
+        Debug.Log("Player Discard()");
+        CardCont.HintBox.SetActive(false);
+
+        Vector3 startPos = CardCont.transform.position;
+        Vector3 endPos = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
+
         CardCont.transform.Rotate(Vector3.right, 180);
         CardCont.RankLabel.gameObject.SetActive(true);
 
@@ -182,12 +224,12 @@ public class PlayOptionsController : MonoBehaviour
         CardCont.ButtonCont.DealOne(CardCont.transform.position, true);
 
         CardCont.location = CardController.Location.TRASH;
-        CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
+
+        StartCoroutine(CardCont.ButtonCont.Animation(CardCont.gameObject, startPos, endPos));
+        // CardCont.transform.position = CardCont.ButtonCont.DiscardArea[(int)CardCont.color][CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]];
         CardCont.ButtonCont.DiscardIdx[(int)CardCont.color]++;
 
         Background.GetComponent<TokenController>().AddHint();
-
-        /// Log move in scroll view
 
         MovesLog.text = ("You discarded your " + CardCont.GetColorName() +
             CardCont.RankLabel.text + " card.\n\n") + MovesLog.text;
