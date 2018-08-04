@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class PlayOptionsController : MonoBehaviour
 {
     public CardController CardCont;
+    public TokenController TokenCont;
 
     public bool IsPlayerTurn;
 
@@ -65,9 +66,13 @@ public class PlayOptionsController : MonoBehaviour
         CardCont.ButtonCont.Selected.transform.position = CardCont.OffScreen;
         gameObject.transform.position = CardCont.OffScreen;
 
-        StartCoroutine(EndOfPlayerTurn());
-
-        return;
+        if (CardCont.ButtonCont.isGameOver == true)
+        {
+            return;
+        } else
+        {
+            StartCoroutine(EndOfPlayerTurn());
+        }
     }
 
     ///<summary>
@@ -97,6 +102,7 @@ public class PlayOptionsController : MonoBehaviour
     /// </summary>
     public void HintRank()
     {
+        
         Debug.Log("Player HintRank()");
         Background.GetComponent<TokenController>().RemoveHint();
 
@@ -113,6 +119,7 @@ public class PlayOptionsController : MonoBehaviour
         }
 
         MovesLog.text = ("You hinted your oponent's " + CardCont.RankLabel.text + " cards.\n\n") + MovesLog.text;
+        
     }
 
     /// <summary>

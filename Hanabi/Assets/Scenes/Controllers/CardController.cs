@@ -13,6 +13,8 @@ public class CardController : MonoBehaviour
 {
     public ButtonController ButtonCont;
 
+    public GameObject EyeTrackerDot;
+
     public GameObject Front;
     public GameObject HintBox;
     public GameObject Selected;
@@ -190,19 +192,5 @@ public class CardController : MonoBehaviour
             HintOptions.GetComponent<PlayOptionsController>().CardCont = this;
             MoveCardOptions.transform.position = OffScreen;
         }
-    }
-
-    private void Update()
-    {
-        /*
-            if (gameObject.GetComponent<GazeAware>().HasGazeFocus)
-            {
-                OnMouseUpAsButton();
-            }
-            else
-            {
-
-            }
-        */
     }
 }

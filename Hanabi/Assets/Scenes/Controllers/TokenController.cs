@@ -9,7 +9,8 @@ using UnityEngine;
 /// </summary>
 public class TokenController : MonoBehaviour
 {
-    public ButtonController ButtonCont;
+    public ButtonController StartButton;
+    public RestartController RestartButton;
 
     public GameObject Token;
     public GameObject[] Hints;
@@ -33,7 +34,7 @@ public class TokenController : MonoBehaviour
         Hints = new GameObject[8];
         for (int i = 0; i < 8; i++)
         {
-            HintTokenPos[i] = new Vector3((-300 + (i * 600)), 10, 1700);
+            HintTokenPos[i] = new Vector3((-300 + (i * 600)), 10, 2000);
             Hints[i] = Instantiate(Token, HintTokenPos[i], Quaternion.identity);
             Hints[i].GetComponent<MeshRenderer>().material = HintMat;
         }
@@ -43,7 +44,7 @@ public class TokenController : MonoBehaviour
         Mistakes = new GameObject[3];
         for (int j = 0; j < 3; j++)
         {
-            MistakeTokenPos[j] = new Vector3((5000 + (j * 600)), 10, 1700);
+            MistakeTokenPos[j] = new Vector3((5000 + (j * 600)), 10, 2000);
             Mistakes[j] = Instantiate(Token, MistakeTokenPos[j], Quaternion.identity);
             Mistakes[j].GetComponent<MeshRenderer>().material = MistakeMat;
         }
@@ -97,44 +98,32 @@ public class TokenController : MonoBehaviour
     {
         Mistakes[MistakeIdx].GetComponent<MeshRenderer>().material = Grey;
         MistakeIdx--;
-        if (MistakeIdx < 0)
-        {
-            GameOver();
-        }
 
         Debug.Log("Mistake made. " + "MistakeCounter is " + MistakeIdx);
+
+        if (MistakeIdx == -1)
+        {
+            Debug.Log("About to call gameover");
+            StartButton.GetComponent<ButtonController>().isGameOver = true;
+            StartButton.GetComponent<ButtonController>().GameOver();
+        }
     }
 
-    /// <summary>
-    /// Ends game
-    /// Happens when three mistakes are made 
-    /// OR when there are no more cards in the deck
-    /// </summary>
-    public void GameOver()
+    public void ResetTokens()
     {
-        //END GAME
-        // TODO: show pop up of score and end game
-        // Restart/start new game option?
+        MistakeIdx = 2;
+        HintIdx = 7;
 
-        foreach(GameObject card in ButtonCont.Deck)
+        foreach(GameObject hint in Hints)
         {
-            card.SetActive(false);
+            hint.SetActive(true);
+            hint.GetComponent<MeshRenderer>().material = HintMat;
         }
-
-        foreach (GameObject token in Mistakes)
+        foreach(GameObject mist in Mistakes)
         {
-            token.SetActive(false);
+            mist.SetActive(true);
+            mist.GetComponent<MeshRenderer>().material = MistakeMat;
+
         }
-
-        foreach (GameObject token in Hints)
-        {
-            token.SetActive(false);
-        }
-
-        ButtonCont.PlayerCardMenu.GetComponent<PlayOptionsController>().ScoreText.transform.position = new Vector3(3124, -1250, 0);
-
-
-        Debug.Log("GAME OVER");
-        return;
     }
 }

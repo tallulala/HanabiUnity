@@ -140,8 +140,8 @@ public class AiController : MonoBehaviour
             endPos = thisCard.ButtonCont.PlayArea[(int)thisCard.color][(int)thisCard.rank];
             StartCoroutine(thisCard.ButtonCont.Animation(thisCard.GetComponent<CardController>().gameObject, startPos, endPos));
 
-            PlayCont.Score++;
-            PlayCont.ScoreText.text = "Score: " + PlayCont.Score + "/25";
+            PlayCont.GetComponent<PlayOptionsController>().Score++;
+            PlayCont.GetComponent<PlayOptionsController>().ScoreText.text = "Score: " + PlayCont.GetComponent<PlayOptionsController>().Score + "/25";
         }
 
         // Add move to scroll view

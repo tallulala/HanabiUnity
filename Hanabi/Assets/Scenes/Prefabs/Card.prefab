@@ -1058,27 +1058,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbfc25ff5b2ca2f4083fad34d454280c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ButtonCont: {fileID: 0}
+  EyeTrackerDot: {fileID: 1651375011442688, guid: 585bff3c5d65c9144bead979a05e1491,
+    type: 2}
   Front: {fileID: 1532489183787350}
   HintBox: {fileID: 1103447062777700}
   Selected: {fileID: 1812788921193222, guid: 5b007dc7a89c54549865635a73df2871, type: 2}
-  Background: {fileID: 1379707864246168}
-  ButtonCont: {fileID: 0}
-  AiCont: {fileID: 0}
-  OffScreen: {x: 6000000, y: 0, z: 6000000}
+  CardColor: {fileID: 0}
+  HintedColor: {fileID: 0}
+  RankLabel: {fileID: 102695513147646144}
+  HintedRank: {fileID: 102763861191540944}
   MoveCardOptions: {fileID: 1308439936512524, guid: e52e716ef6abdcd459294171c91d0b2e,
     type: 2}
   HintOptions: {fileID: 1460134934140946, guid: ffa012cc6a8ca5e47804676e364dd4f1,
     type: 2}
-  RankLabel: {fileID: 102695513147646144}
-  HintedRank: {fileID: 102763861191540944}
-  CardColor: {fileID: 0}
-  HintedColor: {fileID: 0}
   white: {fileID: 2100000, guid: 605c78164add013408ea48d6bb0730cc, type: 2}
   blue: {fileID: 2100000, guid: 2c0880ad411886e4893102cb46d22922, type: 2}
   yellow: {fileID: 2100000, guid: e0df0e17507a30a4eac0240fa0f6e62a, type: 2}
   red: {fileID: 2100000, guid: 4fc3b0bb2e53c8642b1ee76e8ea34445, type: 2}
   green: {fileID: 2100000, guid: 3bb2509d5d85f614e8b4c6e94c0c7edb, type: 2}
   grey: {fileID: 2100000, guid: cd51b1953ad43cc40a6bafd5b8bf6417, type: 2}
+  OffScreen: {x: 6000000, y: 0, z: 6000000}
   idx: 0
   color: 0
   rank: 0

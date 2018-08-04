@@ -479,16 +479,19 @@ MonoBehaviour:
   Card: {fileID: 1568214811776634, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   Front: {fileID: 1943379278599386, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   Deck: []
+  RestartButton: {fileID: 0}
   PlayerCardMenu: {fileID: 0}
   ComputerCardMenu: {fileID: 0}
+  Selected: {fileID: 0}
+  Background: {fileID: 0}
   DeckCount: 0
   RankCount: 0300000002000000020000000200000001000000
   DeckPos: {x: 0, y: 0, z: 0}
   OffScreen: {x: 0, y: 0, z: 0}
   PlayerHand: []
   ComputerHand: []
-  PlayArea: []
-  DiscardPile: []
+  DiscardIdx: 
+  PlayIdx: 
 --- !u!114 &114049642909746522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1204,18 +1207,22 @@ MonoBehaviour:
   Card: {fileID: 1379707864246168, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   Front: {fileID: 1532489183787350, guid: ed47dd803fe63af4880dc198cbf89b77, type: 2}
   Deck: []
+  RestartButton: {fileID: 1645739094819738, guid: a369d2ddce2ad94498a2cd47c73bb926,
+    type: 2}
   PlayerCardMenu: {fileID: 1308439936512524, guid: e52e716ef6abdcd459294171c91d0b2e,
     type: 2}
   ComputerCardMenu: {fileID: 1460134934140946, guid: ffa012cc6a8ca5e47804676e364dd4f1,
     type: 2}
+  Selected: {fileID: 1812788921193222, guid: 5b007dc7a89c54549865635a73df2871, type: 2}
+  Background: {fileID: 1519268767235322, guid: 55e2204162172c642b769b329682f88a, type: 2}
   DeckCount: 0
   RankCount: 0300000002000000020000000200000001000000
   DeckPos: {x: 0, y: 0, z: 0}
   OffScreen: {x: 0, y: 0, z: 0}
   PlayerHand: []
   ComputerHand: []
-  PlayArea: []
-  DiscardPile: []
+  DiscardIdx: 
+  PlayIdx: 
 --- !u!114 &114958807884409028
 MonoBehaviour:
   m_ObjectHideFlags: 1

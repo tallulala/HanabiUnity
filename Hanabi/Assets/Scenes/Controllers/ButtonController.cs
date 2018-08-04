@@ -9,15 +9,21 @@ using UnityEngine.UI;
 /// </summary>
 public class ButtonController : MonoBehaviour
 {
+    public GazeTrackingController GazeCont;
+
     public GameObject Card;
     public GameObject Front;
     public GameObject[] Deck;
+    public GameObject RestartButton;
+
+    public GameObject NameField;
+    public string playerName;
 
     public GameObject PlayerCardMenu;
     public GameObject ComputerCardMenu;
     public GameObject Selected;
     public GameObject Background;
-    
+
     public int DeckCount;
 
     public int[] RankCount = { 3, 2, 2, 2, 1 };
@@ -34,14 +40,22 @@ public class ButtonController : MonoBehaviour
     public int[] DiscardIdx;
     public int[] PlayIdx;
 
+    public bool isGameOver;
+
     /// Assigns variables
     public void Start()
     {
+        isGameOver = false;
+
+        
+
+        StartCoroutine(GazeCont.MakeMap());
+
         DeckPos = new Vector3(-2200, 25, 250);
 
-        Deck = new GameObject[50];
-
         OffScreen = new Vector3(6000000f, 0f, 6000000f);
+
+        RestartButton.transform.position = OffScreen;
 
         /// Hands, play area, discard area
         ComputerHand = new Vector3[5];
@@ -57,7 +71,7 @@ public class ButtonController : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             ComputerHand[i] = new Vector3((1800 + (800 * i)), 2, 200) + DeckPos;
-            PlayerHand[i] = new Vector3((1800 + (800 * i)), 2, -3350) + DeckPos;
+            PlayerHand[i] = new Vector3((1800 + (800 * i)), 2, -3500) + DeckPos;
         }
 
         /// Instantiate PlayArea positions
@@ -102,17 +116,24 @@ public class ButtonController : MonoBehaviour
     /// </summary>
     public void OnClick()
     {
+        Debug.Log("Buttoncont click");
+
+
+
         gameObject.transform.position = OffScreen;
         PlayerCardMenu.transform.position = OffScreen;
         ComputerCardMenu.transform.position = OffScreen;
         Selected.transform.position = OffScreen;
+        NameField.transform.position = OffScreen;
+
+        playerName = NameField.GetComponent<InputField>().text;
+
+        Deck = new GameObject[50];
 
         Deck = MakeDeck();
         Deck = Shuffle(Deck);
 
         StartCoroutine(DealHands());
-
-        return;
     }
 
     /// <summary>
@@ -200,12 +221,12 @@ public class ButtonController : MonoBehaviour
     /// <returns>The card that was dealt</returns>
     public GameObject DealOne(Vector3 position, bool player, float delay = 0.0f)
     {
-        
         GameObject card = Deck[DeckCount - 1];
 
         if (Deck[0] == null)
         {
-            Background.GetComponent<TokenController>().GameOver();
+            isGameOver = true;
+            GameOver();
         }
         else
         {
@@ -275,5 +296,38 @@ public class ButtonController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         GO.transform.position = destination;
+    }
+
+    /// <summary>
+    /// Ends game
+    /// Happens when three mistakes are made 
+    /// OR when there are no more cards in the deck
+    /// </summary>
+    public void GameOver()
+    {
+        Debug.Log("GAME OVER");
+
+        GazeCont.GetComponent<GazeTrackingController>().SaveTextureAsPNG();
+
+        PlayerCardMenu.GetComponent<PlayOptionsController>().ScoreText.transform.position = new Vector3(2500, 50, -1500);
+
+        RestartButton.transform.position = new Vector3(3000, 50, -2000);
+
+        foreach (GameObject card in Deck)
+        {
+            card.SetActive(false);
+            Debug.Log(card);
+        }
+        Debug.Log("cards destroyed: " + Deck.Length);
+
+        foreach (GameObject token in Background.GetComponent<TokenController>().Mistakes)
+        {
+            token.SetActive(false);
+        }
+        foreach (GameObject token in Background.GetComponent<TokenController>().Hints)
+        {
+            token.SetActive(false);
+        }
+        Debug.Log("tokens destroyed");
     }
 }
