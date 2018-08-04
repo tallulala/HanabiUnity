@@ -47,10 +47,6 @@ public class ButtonController : MonoBehaviour
     {
         isGameOver = false;
 
-        
-
-        StartCoroutine(GazeCont.MakeMap());
-
         DeckPos = new Vector3(-2200, 25, 250);
 
         OffScreen = new Vector3(6000000f, 0f, 6000000f);
@@ -118,7 +114,7 @@ public class ButtonController : MonoBehaviour
     {
         Debug.Log("Buttoncont click");
 
-
+        StartCoroutine(GazeCont.MakeMap());
 
         gameObject.transform.position = OffScreen;
         PlayerCardMenu.transform.position = OffScreen;

@@ -9,6 +9,7 @@ public class GazeTrackingController : MonoBehaviour
 {
     public ButtonController ButtonCont;
     public Camera cam;
+    public string[] files;
     public Text txt;
     public float minx;
     public float maxx;
@@ -19,7 +20,6 @@ public class GazeTrackingController : MonoBehaviour
     public float hue = 0;
     public float saturation = 1;
     public float value = 1;
-    public int ImageCount = 0;
 
     public void Start()
     {
@@ -36,9 +36,14 @@ public class GazeTrackingController : MonoBehaviour
     {
         int n = 0;
 
-        while (!ButtonCont.isGameOver)
+        while (true)
         {
             yield return new WaitForSeconds(0.1f);
+
+            if (ButtonCont.isGameOver == true)
+            {
+                yield break;
+            }
 
             Vector2 GazeInput = TobiiAPI.GetGazePoint().Viewport;
             Vector3 GazeDotPos = new Vector3(GazeInput.x, GazeInput.y, 0);
@@ -99,9 +104,13 @@ public class GazeTrackingController : MonoBehaviour
 
     public void SaveTextureAsPNG()
     {
+        files = Directory.GetFiles(Application.dataPath + "/../HeatMaps");
+
+        int fileCount = files.Length;
+
         byte[] bytes = texture.EncodeToPNG();
-        File.WriteAllBytes(Application.dataPath + "/../HeatMaps/HeatMap" + ButtonCont.playerName + ImageCount + ".png", bytes);
-        ImageCount++;
+
+        File.WriteAllBytes(Application.dataPath + "/../HeatMaps/HeatMap" + fileCount + ".png", bytes);
 
         for (int i = 0; i < texture.width; ++i)
         {
