@@ -12,7 +12,7 @@ public class RestartController : MonoBehaviour {
         Debug.Log("Restartcont click");
 
         ButtonCont.Start();
-        StartCoroutine(ButtonCont.GazeCont.MakeMap());
+        ButtonCont.OnClick();
 
         foreach (GameObject card in ButtonCont.Deck)
         {
@@ -21,11 +21,10 @@ public class RestartController : MonoBehaviour {
             card.transform.position = ButtonCont.DeckPos;
         }
 
-        ButtonCont.Deck = ButtonCont.Shuffle(ButtonCont.Deck);
+        //ButtonCont.Deck = ButtonCont.Shuffle(ButtonCont.Deck);
         ButtonCont.Background.GetComponent<TokenController>().ResetTokens();
         ButtonCont.PlayerCardMenu.GetComponent<PlayOptionsController>().ScoreText.transform.position = new Vector3(-3000, 2, 1500);
         ButtonCont.PlayerCardMenu.GetComponent<PlayOptionsController>().MovesLog.text = "";
-        
-        StartCoroutine(ButtonCont.DealHands());
+    
     }
 }

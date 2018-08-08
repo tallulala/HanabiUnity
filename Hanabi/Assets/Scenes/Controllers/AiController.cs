@@ -200,6 +200,7 @@ public class AiController : MonoBehaviour
                 i++;
             }
         }
+        Debug.Assert(i == 5);
 
         System.Random random = new System.Random();
         return cards[random.Next(0, 5)].GetComponent<CardController>();

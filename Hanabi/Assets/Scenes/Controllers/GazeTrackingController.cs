@@ -51,15 +51,15 @@ public class GazeTrackingController : MonoBehaviour
 
             if (!float.IsNaN(GazeInput.x) && !float.IsNaN(GazeInput.y))
             {
-                txt.text = "Gaze detected    " + string.Format("{0:0.##}", GazeInput.x) + "/" + string.Format("{0:0.##}", GazeInput.y) +
-                    "      " + string.Format("{0:0.##}", transformed.x) + "/" + string.Format("{0:0.##}", transformed.y);
+                
 
                 gameObject.GetComponent<RectTransform>().anchoredPosition =
                     new Vector2(minx * (1 - GazeDotPos.x) + maxx * (GazeDotPos.x), miny * (1 - GazeDotPos.y) + maxy * (GazeDotPos.y));
 
                 int x = (int)(texture.width * (GazeDotPos.x));
                 int y = (int)(texture.height * (GazeDotPos.y));
-
+                txt.text = "Gaze detected    " + string.Format("{0:0.##}", GazeInput.x) + "/" + string.Format("{0:0.##}", GazeInput.y) +
+                    "      " + string.Format("{0:0.##}", transformed.x) + "/" + string.Format("{0:0.##}", transformed.y) + " set " + x + "/" + y;
                 ColorRadius(1, 0.1f, x, y);
                 ColorRadius(3, 0.05f, x, y);
                 ColorRadius(5, 0.02f, x, y);
@@ -116,8 +116,10 @@ public class GazeTrackingController : MonoBehaviour
         {
             for (int j = 0; j < texture.height; ++j)
             {
-                texture.SetPixel(i, j, Color.white);
+                texture.SetPixel(i, j, Color.HSVToRGB(0.75f, saturation, value));
             }
         }
+
+        texture.Apply();
     }
 }

@@ -46,6 +46,11 @@ public class PlayOptionsController : MonoBehaviour
     {
         MoveOption = (Options)opt;
 
+        if (CardCont.ButtonCont.isGameOver == true)
+        {
+            return;
+        }
+
         switch (MoveOption)
         {
             case Options.RANK:
@@ -81,8 +86,6 @@ public class PlayOptionsController : MonoBehaviour
     /// <returns>IEnumerator WaitForSeconds()</returns>
     public IEnumerator EndOfPlayerTurn()
     {
-        Debug.Log("Waiting");
-
         CardCont.ButtonCont.PlayerCardMenu.GetComponent<PlayOptionsController>().Turn.text = "Computer's Turn";
 
         yield return new WaitForSeconds(1);
@@ -92,8 +95,6 @@ public class PlayOptionsController : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         CardCont.ButtonCont.PlayerCardMenu.GetComponent<PlayOptionsController>().Turn.text = "Your Turn";
-
-        Debug.Log("Waited");
     }
 
     /// <summary>
@@ -102,7 +103,6 @@ public class PlayOptionsController : MonoBehaviour
     /// </summary>
     public void HintRank()
     {
-        
         Debug.Log("Player HintRank()");
         Background.GetComponent<TokenController>().RemoveHint();
 
@@ -119,7 +119,6 @@ public class PlayOptionsController : MonoBehaviour
         }
 
         MovesLog.text = ("You hinted your oponent's " + CardCont.RankLabel.text + " cards.\n\n") + MovesLog.text;
-        
     }
 
     /// <summary>

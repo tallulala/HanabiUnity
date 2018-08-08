@@ -16,7 +16,6 @@ public class ButtonController : MonoBehaviour
     public GameObject[] Deck;
     public GameObject RestartButton;
 
-    public GameObject NameField;
     public string playerName;
 
     public GameObject PlayerCardMenu;
@@ -112,17 +111,12 @@ public class ButtonController : MonoBehaviour
     /// </summary>
     public void OnClick()
     {
-        Debug.Log("Buttoncont click");
-
         StartCoroutine(GazeCont.MakeMap());
 
         gameObject.transform.position = OffScreen;
         PlayerCardMenu.transform.position = OffScreen;
         ComputerCardMenu.transform.position = OffScreen;
         Selected.transform.position = OffScreen;
-        NameField.transform.position = OffScreen;
-
-        playerName = NameField.GetComponent<InputField>().text;
 
         Deck = new GameObject[50];
 
@@ -150,6 +144,7 @@ public class ButtonController : MonoBehaviour
     /// 1 five of each color
     public GameObject[] MakeDeck()
     {
+        DeckCount = 0;
         int i = 0;
         int rank;
 
@@ -265,6 +260,7 @@ public class ButtonController : MonoBehaviour
                 current = random.Next(DeckCount);
             }
 
+            Debug.Log("Deck Size: " + Deck.Length);
             shuffledDeck[i] = Deck[current];
             checkDistinct.Add(current);
         }
